@@ -60,7 +60,7 @@ export default function Home() {
           target="_blank"
           referrerPolicy="no-referrer"
         >
-          Play
+          Play!
         </a>
 
         <div className={styles.grid}>
