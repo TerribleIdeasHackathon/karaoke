@@ -1,14 +1,11 @@
+import { ErrorResponse } from '@/models/errorResponse';
 import { NextApiResponse } from 'next';
 import { ZodError, ZodSchema } from 'zod';
-
-interface BadRequestData {
-  message: string;
-}
 
 export default async function validate<T>(
   value: any,
   model: ZodSchema<T>,
-  res: NextApiResponse<BadRequestData>,
+  res: NextApiResponse<ErrorResponse>,
 ): Promise<T | null> {
   console.log(value);
   try {

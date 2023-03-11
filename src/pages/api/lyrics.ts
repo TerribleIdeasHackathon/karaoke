@@ -1,12 +1,14 @@
 import { generateQuery } from '@/chatgpt/generateQuery';
-import { handleQuery } from '@/chatgpt/handleQuery';
-import { generateSortedLrcFile } from '@/lrc/parseLrc';
+import { handleQuery as handleChatGptQuery } from '@/chatgpt/handleQuery';
+import { generateSortedLrcFile, parseLrcLines } from '@/lrc/parseLrc';
 import { searchForSongLyrics } from '@/lrc/scrapeLyrics';
+import { ErrorResponse } from '@/models/errorResponse';
+import { KaraokeResponse } from '@/models/karaokeResponse';
 import { NextApiRequest, NextApiResponse } from 'next';
 import validate from '../../middleware/validate';
 import { KaraokeRequest } from '../../models/karaokeRequest';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<KaraokeResponse | ErrorResponse>) {
   const body = await validate(req.body, KaraokeRequest, res);
   if (!body) return;
 
@@ -19,7 +21,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const sortedLyrics = generateSortedLrcFile(lrcLyrics);
   const chatGptQuery = generateQuery(body, sortedLyrics);
 
-  const lines = await handleQuery(chatGptQuery);
+  // This will take a while...
+  const lrcLines = await handleChatGptQuery(chatGptQuery);
+  const lyricData = parseLrcLines(lrcLines);
 
-  res.status(200).json({ lyrics: lines });
+  res.status(200).json({ lyrics: lyricData, songName: '', artist: '' });
 }
