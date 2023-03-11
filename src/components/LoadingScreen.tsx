@@ -2,8 +2,8 @@ import { Box } from '@chakra-ui/react';
 import { Spinner, Center, Text } from '@chakra-ui/react';
 import { Flex, Spacer } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
-import { quotes } from './quotes';
-import '../styles/LoadingScreen.module.css';
+import { quotes } from '@/components/quotes';
+//import '../styles/LoadingScreen.module.css';
 
 export default function LoadingScreen() {
   const [quoteIdx, setQuoteIdx] = useState(0);
@@ -20,17 +20,16 @@ export default function LoadingScreen() {
   }, []);
 
   return (
-    <Box>
+    <Box alignItems="center" verticalAlign={'center'} py={10}>
       <Center color="red.100">
-        {' '}
         <Spinner className="spinner" size="xl" color="red.500" speed="2s" variant="bold" p={3}></Spinner>
       </Center>
 
-      <div>
-        <Text color="red.500" p={3} onClick={() => {}}>
+      <Center>
+        <Text color="red.500" p={3}>
           {quote}
         </Text>
-      </div>
+      </Center>
     </Box>
   );
 }
