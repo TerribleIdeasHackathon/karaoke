@@ -13,3 +13,7 @@ const ThemesRequest = z.object({
 });
 
 export const KaraokeRequest = ThemesRequest.or(AntonymRequest);
+
+export type AntonymRequest = z.infer<typeof AntonymRequest>;
+export type ThemesRequest = z.infer<typeof ThemesRequest>;
+export type KaraokeRequest = z.infer<typeof KaraokeRequest>;

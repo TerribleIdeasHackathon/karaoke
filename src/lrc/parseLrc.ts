@@ -1,19 +1,53 @@
-import { LyricData } from '../models/karaokeResponse';
+import { LyricData, ParsedLyricData } from '../models/karaokeResponse';
 
 const TimestampRegex = /^((\[\d{2}:\d{2}\.\d{2}\])+).*$/g;
 
-export function generateSortedLrclines(lines: string[]): string[] {
-  const parsedLyrics = parseLines(lines);
+export function parseLrcLines(lines: string[]): LyricData[] {
+  const parsedLyricData = lines.map((line) => {
+    const endOfTimestamp = line.indexOf(']');
+
+    const timestamp = line.substring(0, endOfTimestamp + 1);
+    const timestampMs = timestampToMs(timestamp);
+
+    const lyric = line.substring(endOfTimestamp + 1);
+    return { timestampMs, lyric };
+  });
+
+  const resultingLyricData: LyricData[] = [];
+
+  for (let index = 0; index < parsedLyricData.length; index++) {
+    const lyricData = parsedLyricData[index];
+    const numberOfWords = lyricData.lyric.split('s+').length;
+    const guestimatedMaxDurationMs = numberOfWords * 150;
+
+    const isLastLine = (index = parsedLyricData.length - 1);
+
+    let duration;
+    if (!isLastLine) {
+      const timestampDifferenceMs = Math.max(0, parsedLyricData[index + 1].timestampMs - lyricData.timestampMs);
+      duration = Math.min(timestampDifferenceMs, guestimatedMaxDurationMs);
+    } else {
+      duration = guestimatedMaxDurationMs;
+    }
+
+    resultingLyricData.push({ ...lyricData, duration });
+  }
+
+  return resultingLyricData;
+}
+
+export function generateSortedLrcFile(originalLrcFile: string): string {
+  const parsedLyrics = parseLines(originalLrcFile.split('\n'));
 
   const sortedLyrics = parsedLyrics
     .sort((a, b) => a.timestampMs - b.timestampMs)
     .map((data) => `${msToTimestamp(data.timestampMs)}${data.lyric}`);
 
-  return sortedLyrics;
+  return sortedLyrics.join('\n');
 }
 
-export function parseLines(lines: string[]): LyricData[] {
-  const lyrics: LyricData[] = [];
+export function parseLines(lines: string[]): ParsedLyricData[] {
+  const lyrics: ParsedLyricData[] = [];
   for (const line of lines) {
     const matches = line.match(TimestampRegex);
     // Ignore non-timestamp lines (E.g. author, etc)
