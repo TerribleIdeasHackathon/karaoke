@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
 import Link from 'next/link';
+import LoadingScreen from '@/components/LoadingScreen';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -46,7 +47,10 @@ export default function Home() {
           }}
         >
           Xx_KarAIokI_xX
+          
         </div>
+      <div> <LoadingScreen/></div>
+       
         
         <Link
           style={{
