@@ -3,6 +3,7 @@ import { JSDOM } from 'jsdom';
 import { within } from '@testing-library/dom';
 // @ts-ignore - There is no types for this library
 import google from 'google-it';
+import type { GoogleResponse } from '@/models/googleResponse';
 
 async function render(url: string) {
   const response = await axios.get(url);
@@ -19,9 +20,7 @@ async function render(url: string) {
 
 async function getSongUrlBySearch(searchTerm: string): Promise<string> {
   const prefix = 'site:lyricsify.com';
-  const result = (await google({ query: `${prefix} ${searchTerm}` })) as {
-    link: string;
-  }[];
+  const result = (await google({ query: `${prefix} ${searchTerm}` })) as GoogleResponse;
 
   return result[0].link;
 }
