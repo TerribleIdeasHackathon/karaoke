@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import KaraokeLyricsCard from '../../components/KaraokeLyricsCard';
 import { KaraokeResponse } from '../../models/karaokeResponse';
+import Layout from '../../components/Layout';
 
 export default function Karaoke() {
   const [karaokeResponse, setKaraokeResponse] = useState<KaraokeResponse>({
@@ -35,24 +36,17 @@ export default function Karaoke() {
   }, [index]);
 
   return (
-    <Box>
-      <Header>
-        <Link href="/songSelect">
-          <IconButton aria-label="Go back to home" title="Go back to home" icon={<ArrowBackIcon />} />
-        </Link>
-      </Header>
-      <Container maxW={'2xl'}>
-        <Flex direction="row" gap={2}>
-          <Text fontWeight="bold">{karaokeResponse.songName}</Text>
-          <Text>{karaokeResponse.artist}</Text>
-        </Flex>
-        <KaraokeLyricsCard>
-          <SongLine sentence={karaokeResponse.lyrics[index].lyric} time={karaokeResponse.lyrics[index].duration} />
-          <Text fontWeight="bold" color="black">
-            {index + 1 < karaokeResponse.lyrics.length ? karaokeResponse.lyrics[index + 1].lyric : '🎙'}
-          </Text>
-        </KaraokeLyricsCard>
-      </Container>
-    </Box>
+    <Layout backLink="/songSelect" ariaLabel="Go back to song select">
+      <Flex direction="row" gap={2}>
+        <Text fontWeight="bold">{karaokeResponse.songName}</Text>
+        <Text>{karaokeResponse.artist}</Text>
+      </Flex>
+      <KaraokeLyricsCard>
+        <SongLine sentence={karaokeResponse.lyrics[index].lyric} time={karaokeResponse.lyrics[index].duration} />
+        <Text fontWeight="bold" color="black">
+          {index + 1 < karaokeResponse.lyrics.length ? karaokeResponse.lyrics[index + 1].lyric : '🎙'}
+        </Text>
+      </KaraokeLyricsCard>
+    </Layout>
   );
 }

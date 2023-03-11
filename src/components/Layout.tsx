@@ -20,7 +20,7 @@ export default function Layout({ children, backLink, ariaLabel }: LayoutProps) {
           </Link>
         ) : null}
       </Header>
-      <Container>{children}</Container>
+      <Container maxW={'2xl'}>{children}</Container>
     </Box>
   );
 }

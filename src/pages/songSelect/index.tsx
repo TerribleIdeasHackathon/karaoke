@@ -5,18 +5,14 @@ import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
+import Layout from '@/components/Layout';
 
 export default function SongSelect() {
   const modes = ['Antonym', 'Theme'];
   const [mode, setMode] = useState(0);
 
   return (
-    <>
-      <Header>
-        <Link href="/">
-          <IconButton aria-label="Go back to home" title="Go back to home" icon={<ArrowBackIcon />} />
-        </Link>
-      </Header>
+    <Layout backLink="/" ariaLabel="Go back to home">
       <Box display={'grid'} justifyContent={'center'} alignItems="center" minHeight="100vh">
         <Box
           bg="#131416c2"
@@ -58,7 +54,7 @@ export default function SongSelect() {
           </Link>
         </Box>
       </Box>
-    </>
+    </Layout>
   );
 }
 
