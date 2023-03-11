@@ -38,8 +38,6 @@ export async function handleQuery(prompt: string): Promise<string[]> {
     result = await stream.next();
   }
 
-  console.log(results.join(''));
-
   const lines = results
     .join('')
     // Sometimes we just get a ton of tabs? I think they're meant to be a newline...?

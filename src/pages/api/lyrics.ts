@@ -23,8 +23,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   const chatGptQuery = generateQuery(body, lyricsWithoutTimestamps);
 
-  console.log(chatGptQuery);
-
   const lrcLines: ParsedLyricData[] = [];
 
   // This will take a while...
