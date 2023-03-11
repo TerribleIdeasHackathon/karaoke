@@ -17,8 +17,7 @@ export default function KaraokeLyricsCard({ children }: KaraokeLyricsCard) {
       justifyContent={'center'}
       alignItems="center"
     >
-      <Center
-        flexDir={'column'}
+      <Box
         fontSize={'xl'}
         fontWeight={'semibold'}
         textAlign={'center'}
@@ -27,7 +26,7 @@ export default function KaraokeLyricsCard({ children }: KaraokeLyricsCard) {
         height="full"
       >
         {children}
-      </Center>
+      </Box>
     </Box>
   );
 }

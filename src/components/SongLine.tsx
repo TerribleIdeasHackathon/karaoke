@@ -9,12 +9,14 @@ interface SongLineProps {
 const SongLine = ({ sentence, time }: SongLineProps) => {
   const [currentWordIdx, setCurrentWordIdx] = useState(0);
   useEffect(() => {
+    setCurrentWordIdx(0);
+
     const interval = setInterval(() => {
       setCurrentWordIdx((prev) => prev + 1);
     }, time / sentence.split(' ').length);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [time, sentence]);
 
   return (
     <>
@@ -22,14 +24,16 @@ const SongLine = ({ sentence, time }: SongLineProps) => {
         const isCurrentWord = idx === currentWordIdx;
         const isNextWord = idx < currentWordIdx + 1;
         return (
-          <Text
-            as="span"
-            key={word}
-            color={isCurrentWord ? '#ef3499' : isNextWord ? 'gray.500' : 'black'}
-            fontWeight="bold"
-          >
-            {word + ' '}
-          </Text>
+          <>
+            <Text
+              as="span"
+              key={word}
+              color={isCurrentWord ? '#ef3499' : isNextWord ? 'gray.500' : 'black'}
+              fontWeight="bold"
+            >
+              {word}
+            </Text>{' '}
+          </>
         );
       })}
     </>
