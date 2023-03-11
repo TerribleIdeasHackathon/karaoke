@@ -17,23 +17,36 @@ const completionRequestSettings: Omit<CreateCompletionRequest, 'prompt'> = {
 };
 
 export async function handleQuery(prompt: string): Promise<string[]> {
-  const lines: string[] = [];
+  const results: string[] = [];
 
   const completion = await openai.createCompletion(
     { ...completionRequestSettings, prompt },
     { responseType: 'stream' },
   );
 
-  for await (const message of streamCompletion(completion.data)) {
+  const stream = streamCompletion(completion.data);
+  let result = await stream.next();
+
+  while (!result.done) {
+    const json = result.value;
     try {
-      const parsed = JSON.parse(message);
+      const parsed = JSON.parse(json);
       const { text } = parsed.choices[0];
 
-      lines.push(text);
+      results.push(text);
     } catch (error) {
-      console.error('Could not JSON parse stream message', message, error);
+      console.error('Could not JSON parse stream message', json, error);
     }
+
+    result = await stream.next();
   }
+
+  const lines = results
+    .join('')
+    .replaceAll('\t', '')
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line.length !== 0);
 
   return lines;
 }
@@ -66,27 +79,3 @@ async function* linesToMessages(linesAsync: any) {
 async function* streamCompletion(data: any) {
   yield* linesToMessages(chunksToLines(data));
 }
-
-try {
-  const completion = await openai.createCompletion(
-    {
-      ...completionRequestSettings,
-      prompt:
-        "Write karaoke lyrics for only the chorus of 'I kissed a girl' by Katy Perry, where each phrase is an antonym of the real lyrics",
-    },
-    { responseType: 'stream' },
-  );
-
-  for await (const message of streamCompletion(completion.data)) {
-    try {
-      const parsed = JSON.parse(message);
-      const { text } = parsed.choices[0];
-
-      process.stdout.write(text);
-    } catch (error) {
-      console.error('Could not JSON parse stream message', message, error);
-    }
-  }
-
-  process.stdout.write('\n');
-} catch (error: any) {}
