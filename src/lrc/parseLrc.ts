@@ -1,7 +1,11 @@
-import { LyricData, ParsedLyricData } from '../models/karaokeResponse';
+import { LyricData, ParsedLyricData, SongMetadata } from '../models/karaokeResponse';
 
 const TimestampRegex = /^((\[\d{2}:\d{2}\.\d{2}\])+).*$/g;
-const LyricIgnorePrefixes = ['Artist', 'Title:'];
+const LyricIgnorePrefixes = ['artist', 'title:', 'written by:'];
+
+interface ParsedSongData extends SongMetadata {
+  lyrics: ParsedLyricData[];
+}
 
 export function generateLyricDurations(parsedLyricData: ParsedLyricData[]): LyricData[] {
   const resultingLyricData: LyricData[] = [];
@@ -27,17 +31,28 @@ export function generateLyricDurations(parsedLyricData: ParsedLyricData[]): Lyri
   return resultingLyricData;
 }
 
-export function generateSortedLrcFile(originalLrcFile: string): ParsedLyricData[] {
+export function parseSongData(originalLrcFile: string): ParsedSongData {
   const parsedLyrics = parseLines(originalLrcFile.split('\n'));
-  const sortedLyrics = parsedLyrics.sort((a, b) => a.timestampMs - b.timestampMs);
+  const sortedLyrics = parsedLyrics.lyrics.sort((a, b) => a.timestampMs - b.timestampMs);
 
-  return sortedLyrics;
+  return { ...parsedLyrics, lyrics: sortedLyrics };
 }
 
-export function parseLines(lines: string[]): ParsedLyricData[] {
+export function parseLines(lines: string[]): ParsedSongData {
   const lyrics: ParsedLyricData[] = [];
+  let artist: string | null = null;
+  let songName: string | null = null;
 
   for (const line of lines) {
+    // Check for song metadata
+    if (line.startsWith('[ar:')) {
+      artist = line.substring(4, line.length - 1);
+      continue;
+    } else if (line.startsWith('[ti:')) {
+      songName = line.substring(4, line.length - 1);
+      continue;
+    }
+
     const matches = line.match(TimestampRegex);
     // Ignore non-timestamp lines (E.g. author, etc)
     if (!matches) continue;
@@ -62,14 +77,15 @@ export function parseLines(lines: string[]): ParsedLyricData[] {
     }
   }
 
-  return lyrics;
+  return { lyrics, artist, songName };
 }
 
 function ignoreLyric(lyric: string): boolean {
   if (lyric.length === 0) return true;
+  const loweredLyric = lyric.toLowerCase();
 
   for (const prefix of LyricIgnorePrefixes) {
-    if (lyric.startsWith(prefix)) return true;
+    if (loweredLyric.startsWith(prefix)) return true;
   }
 
   return false;
