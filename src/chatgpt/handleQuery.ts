@@ -43,7 +43,8 @@ export async function handleQuery(prompt: string): Promise<string[]> {
 
   const lines = results
     .join('')
-    .replaceAll('\t', '')
+    // Sometimes we just get a ton of tabs? I think they're meant to be a newline...?
+    .replaceAll(/\t+/g, '\n')
     .split('\n')
     .map((line) => line.trim())
     .filter((line) => line.length !== 0);

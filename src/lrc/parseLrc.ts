@@ -1,6 +1,7 @@
 import { LyricData, ParsedLyricData } from '../models/karaokeResponse';
 
 const TimestampRegex = /^((\[\d{2}:\d{2}\.\d{2}\])+).*$/g;
+const LyricIgnorePrefixes = ['Artist', 'Title:'];
 
 export function generateLyricDurations(parsedLyricData: ParsedLyricData[]): LyricData[] {
   const resultingLyricData: LyricData[] = [];
@@ -35,6 +36,7 @@ export function generateSortedLrcFile(originalLrcFile: string): ParsedLyricData[
 
 export function parseLines(lines: string[]): ParsedLyricData[] {
   const lyrics: ParsedLyricData[] = [];
+
   for (const line of lines) {
     const matches = line.match(TimestampRegex);
     // Ignore non-timestamp lines (E.g. author, etc)
@@ -44,6 +46,8 @@ export function parseLines(lines: string[]): ParsedLyricData[] {
 
     const timestampsSubstring = line.substring(0, endOfTimestamps + 1);
     const lyric = line.substring(endOfTimestamps + 1);
+
+    if (ignoreLyric(lyric)) continue;
 
     // We need to add the ending ']' back after splitting.
     const timestamps = timestampsSubstring
@@ -59,6 +63,16 @@ export function parseLines(lines: string[]): ParsedLyricData[] {
   }
 
   return lyrics;
+}
+
+function ignoreLyric(lyric: string): boolean {
+  if (lyric.length === 0) return true;
+
+  for (const prefix of LyricIgnorePrefixes) {
+    if (lyric.startsWith(prefix)) return true;
+  }
+
+  return false;
 }
 
 /**

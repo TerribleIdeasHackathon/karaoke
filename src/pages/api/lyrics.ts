@@ -22,6 +22,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   const lyricsWithoutTimestamps = sortedLyrics.map((lyric) => lyric.lyric).join('\n');
 
+  console.log(lyricsWithoutTimestamps);
+
   const chatGptQuery = generateQuery(body, lyricsWithoutTimestamps);
 
   // console.log(chatGptQuery);
