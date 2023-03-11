@@ -41,8 +41,6 @@ export async function handleQuery(prompt: string): Promise<string[]> {
     result = await stream.next();
   }
 
-  console.log(results);
-
   const lines = results
     .join('')
     .replaceAll('\t', '')

@@ -2,27 +2,17 @@ import { LyricData, ParsedLyricData } from '../models/karaokeResponse';
 
 const TimestampRegex = /^((\[\d{2}:\d{2}\.\d{2}\])+).*$/g;
 
-export function parseLrcLines(lines: string[]): LyricData[] {
-  const parsedLyricData = lines.map((line) => {
-    const endOfTimestamp = line.indexOf(']');
-
-    const timestamp = line.substring(0, endOfTimestamp + 1);
-    const timestampMs = timestampToMs(timestamp);
-
-    const lyric = line.substring(endOfTimestamp + 1);
-    return { timestampMs, lyric };
-  });
-
+export function generateLyricDurations(parsedLyricData: ParsedLyricData[]): LyricData[] {
   const resultingLyricData: LyricData[] = [];
 
   for (let index = 0; index < parsedLyricData.length; index++) {
     const lyricData = parsedLyricData[index];
-    const numberOfWords = lyricData.lyric.split('s+').length;
-    const guestimatedMaxDurationMs = numberOfWords * 150;
+    const numberOfWords = lyricData.lyric.split(' ').length;
+    const guestimatedMaxDurationMs = numberOfWords * 350;
 
-    const isLastLine = (index = parsedLyricData.length - 1);
+    const isLastLine = index === parsedLyricData.length - 1;
 
-    let duration;
+    let duration: number;
     if (!isLastLine) {
       const timestampDifferenceMs = Math.max(0, parsedLyricData[index + 1].timestampMs - lyricData.timestampMs);
       duration = Math.min(timestampDifferenceMs, guestimatedMaxDurationMs);
@@ -36,14 +26,11 @@ export function parseLrcLines(lines: string[]): LyricData[] {
   return resultingLyricData;
 }
 
-export function generateSortedLrcFile(originalLrcFile: string): string {
+export function generateSortedLrcFile(originalLrcFile: string): ParsedLyricData[] {
   const parsedLyrics = parseLines(originalLrcFile.split('\n'));
+  const sortedLyrics = parsedLyrics.sort((a, b) => a.timestampMs - b.timestampMs);
 
-  const sortedLyrics = parsedLyrics
-    .sort((a, b) => a.timestampMs - b.timestampMs)
-    .map((data) => `${msToTimestamp(data.timestampMs)}${data.lyric}`);
-
-  return sortedLyrics.join('\n');
+  return sortedLyrics;
 }
 
 export function parseLines(lines: string[]): ParsedLyricData[] {

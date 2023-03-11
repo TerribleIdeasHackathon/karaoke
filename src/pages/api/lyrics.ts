@@ -1,9 +1,9 @@
 import { generateQuery } from '@/chatgpt/generateQuery';
 import { handleQuery as handleChatGptQuery } from '@/chatgpt/handleQuery';
-import { generateSortedLrcFile, parseLrcLines } from '@/lrc/parseLrc';
+import { generateSortedLrcFile, generateLyricDurations } from '@/lrc/parseLrc';
 import { searchForSongLyrics } from '@/lrc/scrapeLyrics';
 import { ErrorResponse } from '@/models/errorResponse';
-import { KaraokeResponse } from '@/models/karaokeResponse';
+import { KaraokeResponse, ParsedLyricData } from '@/models/karaokeResponse';
 import { NextApiRequest, NextApiResponse } from 'next';
 import validate from '../../middleware/validate';
 import { KaraokeRequest } from '../../models/karaokeRequest';
@@ -19,14 +19,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   const sortedLyrics = generateSortedLrcFile(lrcLyrics);
-  const chatGptQuery = generateQuery(body, sortedLyrics);
+
+  const lyricsWithoutTimestamps = sortedLyrics.map((lyric) => lyric.lyric).join('\n');
+
+  const chatGptQuery = generateQuery(body, lyricsWithoutTimestamps);
+
+  // console.log(chatGptQuery);
+
+  const lrcLines: ParsedLyricData[] = [];
 
   // This will take a while...
-  const lrcLines = await handleChatGptQuery(chatGptQuery);
+  const mutatedLyrics = await handleChatGptQuery(chatGptQuery);
+  for (let index = 0; index < Math.min(sortedLyrics.length, mutatedLyrics.length); index++) {
+    const mutatedLyric = mutatedLyrics[index];
+    const timestampMs = sortedLyrics[index].timestampMs;
 
-  console.log(lrcLines);
+    lrcLines.push({ timestampMs, lyric: mutatedLyric });
+  }
 
-  const lyricData = parseLrcLines(lrcLines);
+  const lyricData = generateLyricDurations(lrcLines);
 
   res.status(200).json({ lyrics: lyricData, songName: '', artist: '' });
 }
