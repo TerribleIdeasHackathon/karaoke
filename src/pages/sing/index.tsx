@@ -3,8 +3,8 @@ import SongLine from '@/components/SongLine';
 import { motion, useAnimation } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-import KaraokeLyricsCard from '../../components/KaraokeLyricsCard';
-import { KaraokeResponse } from '../../models/karaokeResponse';
+import KaraokeLyricsCard from '@/components/KaraokeLyricsCard';
+import { KaraokeResponse } from '@/models/karaokeResponse';
 import { Container, Flex, Text } from '@chakra-ui/react';
 
 export default function Karaoke() {
