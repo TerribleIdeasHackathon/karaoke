@@ -1,9 +1,11 @@
 import SongLine from '@/components/SongLine';
-import { Container, Flex, Text, keyframes } from '@chakra-ui/react';
+
 import { motion, useAnimation } from 'framer-motion';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+
 import KaraokeLyricsCard from '../../components/KaraokeLyricsCard';
 import { KaraokeResponse } from '../../models/karaokeResponse';
+import { Container, Flex, Text } from '@chakra-ui/react';
 
 export default function Karaoke() {
   const [karaokeResponse, setKaraokeResponse] = useState<KaraokeResponse>({
