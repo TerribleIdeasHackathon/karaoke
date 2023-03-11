@@ -1,5 +1,8 @@
+import Header from '@/components/Header';
 import SongLine from '@/components/SongLine';
-import { Container, Flex, Text } from '@chakra-ui/react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
+import { Box, Container, Flex, IconButton, Text } from '@chakra-ui/react';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import KaraokeLyricsCard from '../../components/KaraokeLyricsCard';
 import { KaraokeResponse } from '../../models/karaokeResponse';
@@ -32,17 +35,24 @@ export default function Karaoke() {
   }, [index]);
 
   return (
-    <Container maxW={'2xl'}>
-      <Flex direction="row" gap={2}>
-        <Text fontWeight="bold">{karaokeResponse.songName}</Text>
-        <Text>{karaokeResponse.artist}</Text>
-      </Flex>
-      <KaraokeLyricsCard>
-        <SongLine sentence={karaokeResponse.lyrics[index].lyric} time={karaokeResponse.lyrics[index].duration} />
-        <Text fontWeight="bold" color="black">
-          {index + 1 < karaokeResponse.lyrics.length ? karaokeResponse.lyrics[index + 1].lyric : '🎙'}
-        </Text>
-      </KaraokeLyricsCard>
-    </Container>
+    <Box>
+      <Header>
+        <Link href="/songSelect">
+          <IconButton aria-label="Go back to home" title="Go back to home" icon={<ArrowBackIcon />} />
+        </Link>
+      </Header>
+      <Container maxW={'2xl'}>
+        <Flex direction="row" gap={2}>
+          <Text fontWeight="bold">{karaokeResponse.songName}</Text>
+          <Text>{karaokeResponse.artist}</Text>
+        </Flex>
+        <KaraokeLyricsCard>
+          <SongLine sentence={karaokeResponse.lyrics[index].lyric} time={karaokeResponse.lyrics[index].duration} />
+          <Text fontWeight="bold" color="black">
+            {index + 1 < karaokeResponse.lyrics.length ? karaokeResponse.lyrics[index + 1].lyric : '🎙'}
+          </Text>
+        </KaraokeLyricsCard>
+      </Container>
+    </Box>
   );
 }
