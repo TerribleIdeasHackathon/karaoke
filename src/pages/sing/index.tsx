@@ -1,5 +1,6 @@
 import SongLine from '@/components/SongLine';
-import { Container, Flex, Text } from '@chakra-ui/react';
+import { Container, Flex, Text, keyframes } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import KaraokeLyricsCard from '../../components/KaraokeLyricsCard';
 import { KaraokeResponse } from '../../models/karaokeResponse';
@@ -39,8 +40,20 @@ export default function Karaoke() {
       </Flex>
       <KaraokeLyricsCard>
         <SongLine sentence={karaokeResponse.lyrics[index].lyric} time={karaokeResponse.lyrics[index].duration} />
-        <Text fontWeight="bold" color="black">
-          {index + 1 < karaokeResponse.lyrics.length ? karaokeResponse.lyrics[index + 1].lyric : '🎙'}
+        <Text
+          as={motion.div}
+          initial={{ y: '0px' }}
+          animate={{
+            y: '-1.9rem',
+            transition: {
+              delay: karaokeResponse.lyrics[index].duration / 1200,
+            },
+          }}
+          exit={{ y: '0px' }}
+          fontWeight="bold"
+          color="black"
+        >
+          {index + 2 < karaokeResponse.lyrics.length ? karaokeResponse.lyrics[index + 1].lyric : '🎙'}
         </Text>
       </KaraokeLyricsCard>
     </Container>
