@@ -1,4 +1,4 @@
-import { Configuration, CreateCompletionRequest, OpenAIApi } from 'openai';
+import { Configuration, CreateChatCompletionRequest, CreateCompletionRequest, OpenAIApi } from 'openai';
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -6,21 +6,18 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-const completionRequestSettings: Omit<CreateCompletionRequest, 'prompt'> = {
-  model: 'text-davinci-003',
+const completionRequestSettings: Omit<CreateChatCompletionRequest, 'messages'> = {
+  model: 'gpt-3.5-turbo',
   max_tokens: 2048,
   stream: true,
-  temperature: 0.6,
-  top_p: 1.0,
-  frequency_penalty: 0.5,
-  presence_penalty: 0.7,
+  temperature: 0.7,
 };
 
 export async function handleQuery(prompt: string): Promise<string[]> {
   const results: string[] = [];
 
-  const completion = await openai.createCompletion(
-    { ...completionRequestSettings, prompt },
+  const completion = await openai.createChatCompletion(
+    { ...completionRequestSettings, messages: [{ role: 'user', content: prompt }] },
     { responseType: 'stream' },
   );
 
@@ -31,15 +28,17 @@ export async function handleQuery(prompt: string): Promise<string[]> {
     const json = result.value;
     try {
       const parsed = JSON.parse(json);
-      const { text } = parsed.choices[0];
+      const response = parsed.choices[0].delta.content;
 
-      results.push(text);
+      results.push(response);
     } catch (error) {
       console.error('Could not JSON parse stream message', json, error);
     }
 
     result = await stream.next();
   }
+
+  console.log(results.join(''));
 
   const lines = results
     .join('')
