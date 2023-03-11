@@ -7,15 +7,16 @@ import { ArrowBackIcon } from '@chakra-ui/icons';
 interface LayoutProps {
   children?: ReactNode;
   backLink?: string;
+  ariaLabel?: string;
 }
 
-export default function Layout({ children, backLink }: LayoutProps) {
+export default function Layout({ children, backLink, ariaLabel }: LayoutProps) {
   return (
     <Box width="full" px={10} py={5}>
       <Header>
-        {backLink !== undefined ? (
+        {backLink !== undefined && ariaLabel !== undefined ? (
           <Link href={backLink}>
-            <IconButton aria-label="Go back to home" title="Go back to home" icon={<ArrowBackIcon />} />
+            <IconButton aria-label={ariaLabel} title="Go back to home" icon={<ArrowBackIcon />} />
           </Link>
         ) : null}
       </Header>
