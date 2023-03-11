@@ -24,16 +24,16 @@ const SongLine = ({ sentence, time }: SongLineProps) => {
         const isCurrentWord = idx === currentWordIdx;
         const isNextWord = idx < currentWordIdx + 1;
         return (
-          <>
+          <React.Fragment key={idx}>
             <Text
               as="span"
               key={word}
-              color={isCurrentWord ? '#ef3499' : isNextWord ? 'gray.500' : 'black'}
+              color={isCurrentWord ? '#ef3499' : isNextWord ? 'pink.300' : 'gray.500'}
               fontWeight="bold"
             >
               {word}
             </Text>{' '}
-          </>
+          </React.Fragment>
         );
       })}
     </>
