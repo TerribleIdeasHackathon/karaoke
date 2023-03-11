@@ -3,12 +3,12 @@ import { Gamemode } from './gamemode';
 
 const AntonymRequest = z.object({
   mode: z.literal(Gamemode.Antonym),
-  songName: z.string(),
+  songQuery: z.string(),
 });
 
 const ThemesRequest = z.object({
   mode: z.literal(Gamemode.Themes),
-  songName: z.string(),
+  songQuery: z.string(),
   theme: z.string(),
 });
 

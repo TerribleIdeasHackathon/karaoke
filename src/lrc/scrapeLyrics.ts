@@ -36,7 +36,7 @@ async function getLyrics(url: string): Promise<string | null> {
   return lyrics;
 }
 
-export async function searchForSong(searchTerm: string): Promise<string | null> {
+export async function searchForSongLyrics(searchTerm: string): Promise<string | null> {
   const href = await getSongUrlBySearch(searchTerm);
   const lyrics = await getLyrics(href);
 
