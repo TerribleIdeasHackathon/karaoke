@@ -1,8 +1,9 @@
 //create the page here
 import styles from '@/styles/Home.module.css';
-import { Button, Flex, Input, Box, Center, Text, Link, IconButton } from '@chakra-ui/react';
+import { Button, Flex, Input, Box, Center, Text, IconButton } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
+import Link from 'next/link';
 import Header from '@/components/Header';
 
 export default function SongSelect() {
@@ -55,7 +56,9 @@ export default function SongSelect() {
             </Button>
           </Flex>
           <Link href="/sing">
-            <Button width={'full'}>Sing!</Button>
+            <Button width={'full'} colorScheme={'pink'}>
+              Sing!
+            </Button>
           </Link>
         </Box>
       </Box>
