@@ -24,9 +24,9 @@ export default function Karaoke() {
     songName: 'Never gonna give you up',
   });
 
-  const [currentLine, setCurrentLine] = useState<string>('');
   const [index, setIndex] = useState<number>(0);
 
+  //
   function goNext() {
     if (index + 1 >= karaokeResponse.lyrics.length) {
       return;
