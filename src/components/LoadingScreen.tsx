@@ -1,9 +1,13 @@
-import { Box } from '@chakra-ui/react';
-import { Spinner, Center, Text } from '@chakra-ui/react';
-import { Flex, Spacer } from '@chakra-ui/react';
+import { Box, Spinner, Center, Text, Flex } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
-import { quotes } from '@/components/quotes';
-//import '../styles/LoadingScreen.module.css';
+
+const quotes = [
+  'You stink!',
+  'Abandon all hope, ye who enter here! Our loading screen is the harbinger of doom and despair.',
+  'Enter at your own risk! Our loading screen is not for the weak-minded or faint of heart!',
+  'You think you are tough enough for this game? Our loading screen will make you rethink your entire existence!',
+  'Welcome to the world of loading screens, where your impatience and frustration will be put to the ultimate test!',
+];
 
 export default function LoadingScreen() {
   const [quoteIdx, setQuoteIdx] = useState(0);
@@ -12,20 +16,20 @@ export default function LoadingScreen() {
   useEffect(() => {
     const interval = setInterval(() => {
       setQuoteIdx((quoteIdx) => (quoteIdx + 1) % quotes.length);
-    }, 3000);
+    }, 5000);
 
-    return () => {
-      clearInterval(interval);
-    };
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <Box alignItems="center" verticalAlign={'center'} py={10}>
-      <Center color="red.100">
-        <Spinner className="spinner" size="xl" color="red.500" speed="2s" variant="bold" p={3}></Spinner>
-      </Center>
-
-      <Center>
+    <Box py={10}>
+      <Center color="red.100" flexDirection="column">
+        <Flex gap={4} alignItems="center">
+          <Spinner className="spinner" size="xl" color="#ef3499" thickness="5px" speed="2s" />
+          <Text fontWeight="bold" fontSize="4xl">
+            Loading...
+          </Text>
+        </Flex>
         <Text color="red.500" p={3}>
           {quote}
         </Text>
