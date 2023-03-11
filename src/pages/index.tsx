@@ -1,11 +1,9 @@
 import Head from 'next/head';
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
-import styles from '@/styles/Home.module.css';
 import Link from 'next/link';
-import { Container } from '@chakra-ui/react';
-
-const inter = Inter({ subsets: ['latin'] });
+import { Container, Button, Center } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
+import Card from '@/components/Card';
+import { ArrowForwardIcon } from '@chakra-ui/icons';
 
 export default function Home() {
   return (
@@ -17,30 +15,23 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container>
-        <div
-          className={styles.center}
-          style={{
-            fontFamily: 'monospace',
-            fontSize: '6rem',
-          }}
-        >
-          Xx_KarAIokI_xX
-        </div>
+      <Container pt={10} gap={10} display="flex" flexDirection="column" maxW="2xl">
+        <Center width="full">
+          <Text fontSize="6rem">KarAIokI</Text>
+        </Center>
 
-        <Link
-          style={{
-            fontFamily: 'monospace',
-            fontSize: '6rem',
-            backgroundColor: '#ef3499',
-            padding: '1rem 3rem',
-            borderRadius: '1rem',
-            marginTop: '1rem',
-          }}
-          href="/songSelect"
-        >
-          Play!
-        </Link>
+        <Card>
+          <Text>
+            {`Our website uses ChatGPT's advanced language capabilities to generate endless possibilities of
+            entertaining karaoke lyrics. Explore any topic from love ballads to rap battles and let your inner superstar
+            shine with our AI technology.`}
+          </Text>
+          <Link href="/songSelect" style={{ width: '100%' }}>
+            <Button colorScheme={'pink'} size="lg" fontSize="xl" width="full" rightIcon={<ArrowForwardIcon />}>
+              Play!
+            </Button>
+          </Link>
+        </Card>
       </Container>
     </>
   );

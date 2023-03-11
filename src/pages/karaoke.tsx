@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
 import { Gamemode } from '@/models/gamemode';
+import LoadingScreen from '@/components/LoadingScreen';
 
 // songQuery, mode
 async function fetchLyrics(songQuery: string, mode: Gamemode) {

@@ -1,8 +1,20 @@
-import { Button, Flex, Input, Box, Center, Text, IconButton, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  Input,
+  Box,
+  Center,
+  Text,
+  IconButton,
+  Container,
+  InputGroup,
+  InputLeftElement,
+} from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon, SearchIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
+import Card from '@/components/Card';
 import { Gamemode } from '@/models/gamemode';
 import { useRouter } from 'next/router';
 
@@ -41,59 +53,46 @@ export default function SongSelect() {
           <IconButton aria-label="Go back to home" title="Go back to home" icon={<ArrowBackIcon />} />
         </Link>
       </Header>
-      <Box display={'grid'} justifyContent={'center'} alignItems="center" minHeight="100vh">
-        <Box
-          bg="#131416c2"
-          backgroundSize="cover"
-          backgroundPosition={'center'}
-          display={'grid'}
-          gap="15px"
-          borderRadius={'10px'}
-          justifyContent={'center'}
-          alignItems="center"
-          padding={'30px'}
-          width="600px"
-        >
-          <Box>
-            <InputGroup>
-              <InputLeftElement pointerEvents="none">
-                <SearchIcon />
-              </InputLeftElement>
-              <Input
-                width="400px"
-                placeholder="Search for a song"
-                onChange={handleSongQueryChange}
-                value={songQuery}
-                _focusVisible={{
-                  borderColor: '#ef3499',
-                  boxShadow: '0 0 0 1px #ef3499',
-                }}
-              />
-            </InputGroup>
-          </Box>
-
+      <Container maxWidth="2xl" display="flex" flexDirection="column" gap={5}>
+        <Center>
+          <Text fontSize="4xl" fontWeight="bold">
+            Select Song
+          </Text>
+        </Center>
+        <Card>
+          <InputGroup>
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon />
+            </InputLeftElement>
+            <Input
+              placeholder="Search for a song"
+              onChange={handleSongQueryChange}
+              value={songQuery}
+              _focusVisible={{
+                borderColor: '#ef3499',
+                boxShadow: '0 0 0 1px #ef3499',
+              }}
+            />
+          </InputGroup>
           <Center>
             <Text>Select Game Mode</Text>
           </Center>
-
-          <Flex>
-            <Button size="md" flex="1" onClick={() => updateModeIndex(modeIndex - 1)}>
+          <Flex width="full" gap={5}>
+            <Button size="md" onClick={() => updateModeIndex(modeIndex - 1)}>
               <ArrowBackIcon boxSize={5} color="#ef3499" />
             </Button>
-            <Box flex="6">
-              <Center>
-                <Text fontSize={'23px'}>{modes[modeIndex].displayMode}</Text>
-              </Center>
-            </Box>
-            <Button size="md" flex="1" onClick={() => updateModeIndex(modeIndex + 1)}>
+            <Center width="full" borderWidth="1px" borderRadius="md">
+              <Text fontSize="xl">{modes[modeIndex].displayMode}</Text>
+            </Center>
+            <Button size="md" onClick={() => updateModeIndex(modeIndex + 1)}>
               <ArrowForwardIcon boxSize={5} color="#ef3499" />
             </Button>
           </Flex>
           <Button width="full" colorScheme="pink" isDisabled={songQuery.length === 0} onClick={handleClickSing}>
             Sing!
           </Button>
-        </Box>
-      </Box>
+        </Card>
+      </Container>
     </>
   );
 }
