@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
 import Link from 'next/link';
+import { Container } from '@chakra-ui/react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -15,39 +16,18 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div className={styles.description}>
-          
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
-        </div>
 
+      <Container style={{}}>
         <div
           className={styles.center}
           style={{
             fontFamily: 'monospace',
             fontSize: '6rem',
-            marginTop: '1rem',
           }}
         >
           Xx_KarAIokI_xX
         </div>
-        
+
         <Link
           style={{
             fontFamily: 'monospace',
@@ -57,11 +37,11 @@ export default function Home() {
             borderRadius: '1rem',
             marginTop: '1rem',
           }}
-          href="/karaoke"
+          href="/songSelect"
         >
           Play!
         </Link>
-      </main>
+      </Container>
     </>
   );
 }
