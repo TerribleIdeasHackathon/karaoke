@@ -1,11 +1,13 @@
 //create the page here
-import Head from 'next/head';
-import Image from 'next/image';
 import styles from '@/styles/Home.module.css';
-import { Stack, Button, Container, Flex, Input, HStack, Box, Center, VStack, Text, Square } from '@chakra-ui/react';
+import { Button, Flex, Input, Box, Center, Text } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import { useState } from 'react';
 
 export default function Karaoke() {
+  const modes = ['Antonim', 'Theme'];
+  const [mode, setMode] = useState(0);
+
   return (
     <>
       <Box display={'grid'} justifyContent={'center'} alignItems="center" minHeight="100vh">
@@ -34,15 +36,15 @@ export default function Karaoke() {
             <Text>GAME MODE</Text>
           </Center>
           <Flex color="white">
-            <Button size="sm" flex="1">
+            <Button size="sm" flex="1" onClick={(e: any) => setMode(mode - 1)}>
               <ArrowBackIcon color="#ef3499" />
             </Button>
             <Box flex="6">
               <Center>
-                <Text>Antonym</Text>
+                <Text>{modes[Math.abs(mode % modes.length)]}</Text>
               </Center>
             </Box>
-            <Button size="sm" flex="1">
+            <Button size="sm" flex="1" onClick={(e: any) => setMode(mode + 1)}>
               <ArrowForwardIcon color="#ef3499" />
             </Button>
           </Flex>
