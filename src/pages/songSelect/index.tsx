@@ -10,6 +10,20 @@ export default function SongSelect() {
   return (
     <>
       <Box display={'grid'} justifyContent={'center'} alignItems="center" minHeight="100vh">
+        <Center
+          bg="#131416c2"
+          backgroundSize="cover"
+          backgroundPosition={'center'}
+          display={'grid'}
+          gap="15px"
+          borderRadius={'10px'}
+          justifyContent={'center'}
+          alignItems="center"
+          padding={'30px'}
+          width="600px"
+        >
+          <Text fontSize={'50px'}>Song Select!</Text>
+        </Center>
         <Box
           bg="#131416c2"
           backgroundSize="cover"

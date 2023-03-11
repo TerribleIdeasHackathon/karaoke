@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
 import Link from 'next/link';
-import { Container } from '@chakra-ui/react';
+import { Container, Button, Center } from '@chakra-ui/react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,29 +18,31 @@ export default function Home() {
       </Head>
 
       <Container>
-        <div
-          className={styles.center}
-          style={{
-            fontFamily: 'monospace',
-            fontSize: '6rem',
-          }}
-        >
-          Xx_KarAIokI_xX
-        </div>
+        <Center flexDirection={'column'}>
+          <div
+            className={styles.center}
+            style={{
+              fontFamily: 'monospace',
+              fontSize: '6rem',
+            }}
+          >
+            Xx_KarAIokI_xX
+          </div>
 
-        <Link
-          style={{
-            fontFamily: 'monospace',
-            fontSize: '6rem',
-            backgroundColor: '#ef3499',
-            padding: '1rem 3rem',
-            borderRadius: '1rem',
-            marginTop: '1rem',
-          }}
-          href="/songSelect"
-        >
-          Play!
-        </Link>
+          <Link href="/songSelect">
+            <Button
+              className="playbtn"
+              colorScheme={'pink'}
+              size="lg"
+              py={70}
+              fontSize="2rem"
+              width="400px"
+              borderRadius="20px"
+            >
+              Play!
+            </Button>
+          </Link>
+        </Center>
       </Container>
     </>
   );
