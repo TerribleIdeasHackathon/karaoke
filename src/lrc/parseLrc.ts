@@ -1,20 +1,58 @@
-import { LyricData } from '../models/karaokeResponse';
+import { LyricData, ParsedLyricData, SongMetadata } from '../models/karaokeResponse';
 
 const TimestampRegex = /^((\[\d{2}:\d{2}\.\d{2}\])+).*$/g;
+const LyricIgnorePrefixes = ['artist', 'title:', 'written by:'];
 
-export function generateSortedLrclines(lines: string[]): string[] {
-  const parsedLyrics = parseLines(lines);
-
-  const sortedLyrics = parsedLyrics
-    .sort((a, b) => a.timestampMs - b.timestampMs)
-    .map((data) => `${msToTimestamp(data.timestampMs)}${data.lyric}`);
-
-  return sortedLyrics;
+interface ParsedSongData extends SongMetadata {
+  lyrics: ParsedLyricData[];
 }
 
-export function parseLines(lines: string[]): LyricData[] {
-  const lyrics: LyricData[] = [];
+export function generateLyricDurations(parsedLyricData: ParsedLyricData[]): LyricData[] {
+  const resultingLyricData: LyricData[] = [];
+
+  for (let index = 0; index < parsedLyricData.length; index++) {
+    const lyricData = parsedLyricData[index];
+    const numberOfWords = lyricData.lyric.split(' ').length;
+    const guestimatedMaxDurationMs = numberOfWords * 350;
+
+    const isLastLine = index === parsedLyricData.length - 1;
+
+    let duration: number;
+    if (!isLastLine) {
+      const timestampDifferenceMs = Math.max(0, parsedLyricData[index + 1].timestampMs - lyricData.timestampMs);
+      duration = Math.min(timestampDifferenceMs, guestimatedMaxDurationMs);
+    } else {
+      duration = guestimatedMaxDurationMs;
+    }
+
+    resultingLyricData.push({ ...lyricData, duration });
+  }
+
+  return resultingLyricData;
+}
+
+export function parseSongData(originalLrcFile: string): ParsedSongData {
+  const parsedLyrics = parseLines(originalLrcFile.split('\n'));
+  const sortedLyrics = parsedLyrics.lyrics.sort((a, b) => a.timestampMs - b.timestampMs);
+
+  return { ...parsedLyrics, lyrics: sortedLyrics };
+}
+
+export function parseLines(lines: string[]): ParsedSongData {
+  const lyrics: ParsedLyricData[] = [];
+  let artist: string | null = null;
+  let songName: string | null = null;
+
   for (const line of lines) {
+    // Check for song metadata
+    if (line.startsWith('[ar:')) {
+      artist = line.substring(4, line.length - 1);
+      continue;
+    } else if (line.startsWith('[ti:')) {
+      songName = line.substring(4, line.length - 1);
+      continue;
+    }
+
     const matches = line.match(TimestampRegex);
     // Ignore non-timestamp lines (E.g. author, etc)
     if (!matches) continue;
@@ -23,6 +61,8 @@ export function parseLines(lines: string[]): LyricData[] {
 
     const timestampsSubstring = line.substring(0, endOfTimestamps + 1);
     const lyric = line.substring(endOfTimestamps + 1);
+
+    if (ignoreLyric(lyric)) continue;
 
     // We need to add the ending ']' back after splitting.
     const timestamps = timestampsSubstring
@@ -37,7 +77,18 @@ export function parseLines(lines: string[]): LyricData[] {
     }
   }
 
-  return lyrics;
+  return { lyrics, artist, songName };
+}
+
+function ignoreLyric(lyric: string): boolean {
+  if (lyric.length === 0) return true;
+  const loweredLyric = lyric.toLowerCase();
+
+  for (const prefix of LyricIgnorePrefixes) {
+    if (loweredLyric.startsWith(prefix)) return true;
+  }
+
+  return false;
 }
 
 /**

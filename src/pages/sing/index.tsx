@@ -1,11 +1,11 @@
-import Header from '@/components/Header';
 import SongLine from '@/components/SongLine';
-import { ArrowBackIcon } from '@chakra-ui/icons';
-import { Box, Container, Flex, IconButton, Text } from '@chakra-ui/react';
-import Link from 'next/link';
+
+import { motion, useAnimation } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import KaraokeLyricsCard from '../../components/KaraokeLyricsCard';
-import { KaraokeResponse } from '../../models/karaokeResponse';
+
+import KaraokeLyricsCard from '@/components/KaraokeLyricsCard';
+import { KaraokeResponse } from '@/models/karaokeResponse';
+import { Container, Flex, Text } from '@chakra-ui/react';
 
 export default function Karaoke() {
   const [karaokeResponse, setKaraokeResponse] = useState<KaraokeResponse>({
@@ -23,36 +23,101 @@ export default function Karaoke() {
     artist: 'Rick Astley',
     songName: 'Never gonna give you up',
   });
+  const controlsA = useAnimation();
+  const controlsB = useAnimation();
+  const controlsC = useAnimation();
 
-  const [index, setIndex] = useState<number>(0);
+  const [index, setIndex] = useState(0);
+
+  const maxIdx = karaokeResponse.lyrics.length - 1;
+  const nextIdx = index + 1;
 
   useEffect(() => {
+    if (index >= maxIdx) {
+      return;
+    }
+
     const interval = setInterval(() => {
       setIndex((index) => index + 1);
     }, karaokeResponse.lyrics[index + 1].timestampMs - karaokeResponse.lyrics[index].timestampMs);
 
     return () => clearInterval(interval);
-  }, [index]);
+  }, [index, karaokeResponse.lyrics, maxIdx]);
+
+  useEffect(() => {
+    controlsA.start({
+      y: ['0rem', '-1.9rem', '-1.9rem'],
+      opacity: [1, 0, 0],
+      transition: {
+        times: [0, 0.7, 1],
+        duration: 0.35,
+        delay: (karaokeResponse.lyrics[index].duration - 350) / 1000,
+      },
+    });
+  }, [index, karaokeResponse.lyrics, controlsA]);
+
+  useEffect(() => {
+    if (index >= karaokeResponse.lyrics.length - 1) {
+      controlsB.start({
+        y: ['0rem', '-0.95rem', '-0.95rem'],
+        transition: {
+          times: [0, 0.7, 1],
+          duration: 0.35,
+          delay: (karaokeResponse.lyrics[index].duration - 350) / 1000,
+        },
+      });
+    } else {
+      controlsB.start({
+        y: ['0rem', '-1.9rem', '-1.9rem'],
+        // color: ['#718096', '#ED64A6', '#ED64A6'],
+        transition: {
+          times: [0, 0.7, 1],
+          duration: 0.35,
+          delay: (karaokeResponse.lyrics[index].duration - 350) / 1000, // 2.5
+        },
+      });
+    }
+  }, [index, karaokeResponse.lyrics, controlsB]);
+
+  useEffect(() => {
+    if (index >= karaokeResponse.lyrics.length - 1) {
+      controlsC.start({
+        opacity: 0,
+      });
+    } else {
+      controlsC.start({
+        y: ['0rem', '-1.9rem', '-1.9rem'],
+        opacity: [0, 1, 1],
+        transition: {
+          times: [0, 0.7, 1],
+          duration: 0.35,
+          delay: (karaokeResponse.lyrics[index].duration - 350) / 1000,
+        },
+      });
+    }
+  }, [index, karaokeResponse.lyrics, controlsC]);
 
   return (
-    <Box>
-      <Header>
-        <Link href="/songSelect">
-          <IconButton aria-label="Go back to home" title="Go back to home" icon={<ArrowBackIcon />} />
-        </Link>
-      </Header>
-      <Container maxW={'2xl'}>
-        <Flex direction="row" gap={2}>
-          <Text fontWeight="bold">{karaokeResponse.songName}</Text>
-          <Text>{karaokeResponse.artist}</Text>
-        </Flex>
-        <KaraokeLyricsCard>
+    <Container maxW={'3xl'}>
+      <Flex direction="row" gap={2}>
+        <Text fontWeight="bold">{karaokeResponse.songName}</Text>
+        <Text>{karaokeResponse.artist}</Text>
+      </Flex>
+      <KaraokeLyricsCard>
+        <motion.div animate={controlsA} style={{ y: 0 }}>
           <SongLine sentence={karaokeResponse.lyrics[index].lyric} time={karaokeResponse.lyrics[index].duration} />
-          <Text fontWeight="bold" color="black">
-            {index + 1 < karaokeResponse.lyrics.length ? karaokeResponse.lyrics[index + 1].lyric : '🎙'}
+        </motion.div>
+        {/* <motion.div style={{ y: 0 }}> */}
+        <Text fontWeight="bold" as={motion.p} animate={controlsB} color="gray.500">
+          {nextIdx <= maxIdx ? karaokeResponse.lyrics[nextIdx].lyric : '🎶🎙🎶'}
+        </Text>
+        {/* </motion.div> */}
+        <motion.div animate={controlsC} style={{ y: 0, opacity: 0 }}>
+          <Text fontWeight="bold" color="gray.500">
+            {index + 2 <= maxIdx ? karaokeResponse.lyrics[index + 2].lyric : '🎶🎙🎶'}
           </Text>
-        </KaraokeLyricsCard>
-      </Container>
-    </Box>
+        </motion.div>
+      </KaraokeLyricsCard>
+    </Container>
   );
 }

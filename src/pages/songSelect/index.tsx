@@ -1,13 +1,39 @@
-import { Button, Flex, Input, Box, Center, Text, IconButton, Container } from '@chakra-ui/react';
-import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import { Button, Flex, Input, Box, Center, Text, IconButton, Container, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import { ArrowBackIcon, ArrowForwardIcon, SearchIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Card from '@/components/Card';
+import { Gamemode } from '@/models/gamemode';
+import { useRouter } from 'next/router';
+
+interface ModeData {
+  mode: Gamemode;
+  displayMode: string;
+}
 
 export default function SongSelect() {
-  const modes = ['Antonym', 'Theme'];
-  const [mode, setMode] = useState(0);
+  const router = useRouter();
+
+  const modes: ModeData[] = [
+    { mode: Gamemode.Antonym, displayMode: 'Opposite' },
+    { mode: Gamemode.Themes, displayMode: 'Themes' },
+  ];
+  const [modeIndex, setModeIndex] = useState(0);
+  const [songQuery, setSongQuery] = useState('');
+
+  const updateModeIndex = (newModeIndex: number) => {
+    setModeIndex(Math.abs(newModeIndex % modes.length));
+  };
+
+  const handleSongQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSongQuery(e.target.value);
+  };
+
+  const handleClickSing = () => {
+    // This can only be called when songQuery is not an empty string
+    router.push({ pathname: '/karaoke', query: { songQuery, mode: modes[modeIndex].mode } });
+  };
 
   return (
     <>
@@ -23,9 +49,23 @@ export default function SongSelect() {
           </Text>
         </Center>
         <Card>
-          <Input type="text" placeholder="Search for song" />
+            <InputGroup>
+              <InputLeftElement pointerEvents="none">
+                <SearchIcon />
+              </InputLeftElement>
+              <Input
+                width="400px"
+                placeholder="Search for a song"
+                onChange={handleSongQueryChange}
+                value={songQuery}
+                _focusVisible={{
+                  borderColor: '#ef3499',
+                  boxShadow: '0 0 0 1px #ef3499',
+                }}
+              />
+            </InputGroup>
           <Center>
-            <Text>GAME MODE</Text>
+            <Text>Select Game Mode</Text>
           </Center>
           <Flex width="full" gap={5}>
             <Button size="md" onClick={() => setMode(mode - 1)}>
@@ -38,13 +78,10 @@ export default function SongSelect() {
               <ArrowForwardIcon boxSize={5} color="#ef3499" />
             </Button>
           </Flex>
-          <Link href="/sing" style={{ width: '100%' }}>
-            <Button width="full" colorScheme={'pink'}>
-              Sing!
-            </Button>
-          </Link>
+          <Button width="full" colorScheme="pink" isDisabled={songQuery.length === 0} onClick={handleClickSing}>
+            Sing!
+          </Button>
         </Card>
-      </Container>
     </>
   );
 }

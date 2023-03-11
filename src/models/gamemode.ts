@@ -1,4 +1,4 @@
-import { ValuesOf } from '../types/utility';
+import { ValuesOf } from '@/types/utility';
 
 export const Gamemode = {
   Antonym: 'antonym',
