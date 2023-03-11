@@ -42,14 +42,12 @@ export default function Karaoke() {
         <SongLine sentence={karaokeResponse.lyrics[index].lyric} time={karaokeResponse.lyrics[index].duration} />
         <Text
           as={motion.div}
-          initial={{ y: '0px' }}
           animate={{
             y: '-1.9rem',
             transition: {
               delay: karaokeResponse.lyrics[index].duration / 1200,
             },
           }}
-          exit={{ y: '0px' }}
           fontWeight="bold"
           color="black"
         >
