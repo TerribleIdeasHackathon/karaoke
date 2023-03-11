@@ -1,9 +1,6 @@
-const TimestampRegex = /^((\[\d{2}:\d{2}\.\d{2}\])+).*$/g;
+import { LyricData } from '../models/karaokeResponse';
 
-interface LyricData {
-  timestampMs: number;
-  lyric: string;
-}
+const TimestampRegex = /^((\[\d{2}:\d{2}\.\d{2}\])+).*$/g;
 
 export function generateSortedLrclines(lines: string[]): string[] {
   const parsedLyrics = parseLines(lines);
