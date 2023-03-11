@@ -16,7 +16,7 @@ export default function Layout({ children, backLink, ariaLabel }: LayoutProps) {
       <Header>
         {backLink !== undefined && ariaLabel !== undefined ? (
           <Link href={backLink}>
-            <IconButton aria-label={ariaLabel} title="Go back to home" icon={<ArrowBackIcon />} />
+            <IconButton aria-label={ariaLabel} title={ariaLabel} icon={<ArrowBackIcon />} />
           </Link>
         ) : null}
       </Header>
