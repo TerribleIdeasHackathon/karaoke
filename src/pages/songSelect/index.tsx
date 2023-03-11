@@ -1,4 +1,15 @@
-import { Button, Flex, Input, Box, Center, Text, IconButton, Container, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  Input,
+  Box,
+  Center,
+  Text,
+  IconButton,
+  Container,
+  InputGroup,
+  InputLeftElement,
+} from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon, SearchIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import Link from 'next/link';
@@ -49,32 +60,31 @@ export default function SongSelect() {
           </Text>
         </Center>
         <Card>
-            <InputGroup>
-              <InputLeftElement pointerEvents="none">
-                <SearchIcon />
-              </InputLeftElement>
-              <Input
-                width="400px"
-                placeholder="Search for a song"
-                onChange={handleSongQueryChange}
-                value={songQuery}
-                _focusVisible={{
-                  borderColor: '#ef3499',
-                  boxShadow: '0 0 0 1px #ef3499',
-                }}
-              />
-            </InputGroup>
+          <InputGroup>
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon />
+            </InputLeftElement>
+            <Input
+              placeholder="Search for a song"
+              onChange={handleSongQueryChange}
+              value={songQuery}
+              _focusVisible={{
+                borderColor: '#ef3499',
+                boxShadow: '0 0 0 1px #ef3499',
+              }}
+            />
+          </InputGroup>
           <Center>
             <Text>Select Game Mode</Text>
           </Center>
           <Flex width="full" gap={5}>
-            <Button size="md" onClick={() => setMode(mode - 1)}>
+            <Button size="md" onClick={() => updateModeIndex(modeIndex - 1)}>
               <ArrowBackIcon boxSize={5} color="#ef3499" />
             </Button>
             <Center width="full" borderWidth="1px" borderRadius="md">
-              <Text fontSize="xl">{modes[Math.abs(mode % modes.length)]}</Text>
+              <Text fontSize="xl">{modes[modeIndex].displayMode}</Text>
             </Center>
-            <Button size="md" onClick={() => setMode(mode + 1)}>
+            <Button size="md" onClick={() => updateModeIndex(modeIndex + 1)}>
               <ArrowForwardIcon boxSize={5} color="#ef3499" />
             </Button>
           </Flex>
@@ -82,6 +92,7 @@ export default function SongSelect() {
             Sing!
           </Button>
         </Card>
+      </Container>
     </>
   );
 }
