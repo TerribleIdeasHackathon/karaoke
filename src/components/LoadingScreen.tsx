@@ -1,6 +1,6 @@
 import { Box, Spinner, Center, Text, Flex } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
-import SongSelectCard from './SongSelectCard';
+import Card from './Card';
 
 const quotes = [
   'You stink!',
@@ -23,7 +23,7 @@ export default function LoadingScreen() {
   }, []);
 
   return (
-    <SongSelectCard minHeight="220px">
+    <Card minHeight="220px">
       <Flex gap={5} alignItems="center">
         <Spinner className="spinner" size="xl" color="white" thickness="5px" speed="2s" />
         <Text fontWeight="bold" fontSize="4xl">
@@ -33,6 +33,6 @@ export default function LoadingScreen() {
       <Text textAlign="center" p={3} flexGrow="1">
         {quote}
       </Text>
-    </SongSelectCard>
+    </Card>
   );
 }
