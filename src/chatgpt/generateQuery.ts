@@ -11,10 +11,10 @@ export function generateQuery(request: KaraokeRequest, lyrics: string): string {
 }
 
 export function generateAntonymQuery(lyrics: string): string {
-  return `Context: Given an .lrc file, you will generate a file with the exact same timestamps, but modify the lyrics based on the request.
-
-  Request: Generate karaoke lyrics using antonyms for each paragraph, a paragraph is a set of lines with no empty lines between them.
-  
-  .lrc file:
-  ${lyrics}`;
+  return (
+    'Context: Given an .lrc file, you will generate a file with the exact same timestamps, but modify the lyrics based on the request\n\n' +
+    'Request: Generate karaoke lyrics using antonyms for each paragraph, a paragraph is a set of lines with no empty lines between them.\n\n' +
+    '.lrc file:\n' +
+    lyrics
+  );
 }

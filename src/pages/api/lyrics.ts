@@ -23,6 +23,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   // This will take a while...
   const lrcLines = await handleChatGptQuery(chatGptQuery);
+
+  console.log(lrcLines);
+
   const lyricData = parseLrcLines(lrcLines);
 
   res.status(200).json({ lyrics: lyricData, songName: '', artist: '' });

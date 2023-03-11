@@ -11,8 +11,6 @@ async function render(url: string) {
   const dom = new JSDOM(text.replace(/<style(\s|>).*?<\/style>/gi));
   const body = dom.window.document.body;
 
-  console.log(body.innerHTML);
-
   return {
     screen: within(body),
     document: body,

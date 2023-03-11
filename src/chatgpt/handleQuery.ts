@@ -8,7 +8,7 @@ const openai = new OpenAIApi(configuration);
 
 const completionRequestSettings: Omit<CreateCompletionRequest, 'prompt'> = {
   model: 'text-davinci-003',
-  max_tokens: 300,
+  max_tokens: 2048,
   stream: true,
   temperature: 0.6,
   top_p: 1.0,
@@ -40,6 +40,8 @@ export async function handleQuery(prompt: string): Promise<string[]> {
 
     result = await stream.next();
   }
+
+  console.log(results);
 
   const lines = results
     .join('')
