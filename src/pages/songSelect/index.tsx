@@ -4,7 +4,7 @@ import { Button, Flex, Input, Box, Center, Text } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 
-export default function Karaoke() {
+export default function SongSelect() {
   const modes = ['Antonim', 'Theme'];
   const [mode, setMode] = useState(0);
 
