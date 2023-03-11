@@ -17,7 +17,6 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <div className={styles.description}>
-          
           <div>
             <a
               href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
@@ -47,7 +46,7 @@ export default function Home() {
         >
           Xx_KarAIokI_xX
         </div>
-        
+
         <Link
           style={{
             fontFamily: 'monospace',
@@ -57,7 +56,7 @@ export default function Home() {
             borderRadius: '1rem',
             marginTop: '1rem',
           }}
-          href="/karaoke"
+          href="/songSelect"
         >
           Play!
         </Link>
