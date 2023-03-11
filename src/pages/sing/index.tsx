@@ -37,7 +37,7 @@ export default function Karaoke() {
   return (
     <Box>
       <Header>
-        <Link href="/">
+        <Link href="/songSelect">
           <IconButton aria-label="Go back to home" title="Go back to home" icon={<ArrowBackIcon />} />
         </Link>
       </Header>

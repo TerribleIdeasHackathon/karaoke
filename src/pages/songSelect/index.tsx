@@ -1,8 +1,9 @@
 //create the page here
 import styles from '@/styles/Home.module.css';
-import { Button, Flex, Input, Box, Center, Text } from '@chakra-ui/react';
+import { Button, Flex, Input, Box, Center, Text, Link, IconButton } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
+import Header from '@/components/Header';
 
 export default function SongSelect() {
   const modes = ['Antonim', 'Theme'];
@@ -10,6 +11,11 @@ export default function SongSelect() {
 
   return (
     <>
+      <Header>
+        <Link href="/">
+          <IconButton aria-label="Go back to home" title="Go back to home" icon={<ArrowBackIcon />} />
+        </Link>
+      </Header>
       <Box display={'grid'} justifyContent={'center'} alignItems="center" minHeight="100vh">
         <Box
           bg="#2D3134"
@@ -48,6 +54,9 @@ export default function SongSelect() {
               <ArrowForwardIcon color="#ef3499" />
             </Button>
           </Flex>
+          <Link href="/sing">
+            <Button width={'full'}>Sing!</Button>
+          </Link>
         </Box>
       </Box>
     </>
