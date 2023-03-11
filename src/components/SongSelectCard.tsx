@@ -1,11 +1,12 @@
+import { CenterProps } from '@chakra-ui/react';
 import { Center } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 
-interface SongSelectCardProps {
+interface SongSelectCardProps extends CenterProps {
   children?: ReactNode;
 }
 
-export default function SongSelectCard({ children }: SongSelectCardProps) {
+export default function SongSelectCard({ children, ...centerProps }: SongSelectCardProps) {
   return (
     <Center
       bg="#131416c2"
@@ -14,8 +15,9 @@ export default function SongSelectCard({ children }: SongSelectCardProps) {
       paddingY="30px"
       width="600px"
       gap="15px"
-      justifyContent={'center'}
+      justifyContent="center"
       flexDirection="column"
+      {...centerProps}
     >
       {children}
     </Center>

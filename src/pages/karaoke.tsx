@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
 import { Gamemode } from '@/models/gamemode';
+import LoadingScreen from '@/components/LoadingScreen';
 
 async function fetchLyrics(songName: string, mode: Gamemode) {
   const response = await fetch('/api/lyrics', {
@@ -19,6 +20,8 @@ async function fetchLyrics(songName: string, mode: Gamemode) {
 
 export default function KaraokePage() {
   const router = useRouter();
+
+  return <LoadingScreen />;
 
   const { songName, mode } = router.query as {
     songName: string;
