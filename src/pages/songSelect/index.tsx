@@ -1,14 +1,30 @@
-//create the page here
-import styles from '@/styles/Home.module.css';
-import { Button, Flex, Input, Box, Center, Text, IconButton } from '@chakra-ui/react';
-import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import { Button, Flex, Input, Box, Center, Text, IconButton, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import { ArrowBackIcon, ArrowForwardIcon, SearchIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
+import { Gamemode } from '@/models/gamemode';
+
+interface ModeData {
+  mode: Gamemode;
+  displayMode: string;
+}
 
 export default function SongSelect() {
-  const modes = ['Antonym', 'Theme'];
-  const [mode, setMode] = useState(0);
+  const modes: ModeData[] = [
+    { mode: Gamemode.Antonym, displayMode: 'Opposite' },
+    { mode: Gamemode.Themes, displayMode: 'Themes' },
+  ];
+  const [modeIndex, setModeIndex] = useState(0);
+  const [songQuery, setSongQuery] = useState('');
+
+  const updateModeIndex = (newModeIndex: number) => {
+    setModeIndex(Math.abs(newModeIndex % modes.length));
+  };
+
+  const handleSongQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSongQuery(e.target.value);
+  };
 
   return (
     <>
@@ -31,23 +47,37 @@ export default function SongSelect() {
           width="600px"
         >
           <Box>
-            <Input width="400px" type="text" placeholder="Search for song" />
+            <InputGroup>
+              <InputLeftElement pointerEvents="none">
+                <SearchIcon />
+              </InputLeftElement>
+              <Input
+                width="400px"
+                placeholder="Search for a song"
+                onChange={handleSongQueryChange}
+                value={songQuery}
+                _focusVisible={{
+                  borderColor: '#ef3499',
+                  boxShadow: '0 0 0 1px #ef3499',
+                }}
+              />
+            </InputGroup>
           </Box>
 
           <Center>
-            <Text>GAME MODE</Text>
+            <Text>Select Game Mode</Text>
           </Center>
 
           <Flex>
-            <Button size="md" flex="1" onClick={(e: any) => setMode(mode - 1)}>
+            <Button size="md" flex="1" onClick={() => updateModeIndex(modeIndex - 1)}>
               <ArrowBackIcon boxSize={5} color="#ef3499" />
             </Button>
             <Box flex="6">
               <Center>
-                <Text fontSize={'23px'}>{modes[Math.abs(mode % modes.length)]}</Text>
+                <Text fontSize={'23px'}>{modes[modeIndex].displayMode}</Text>
               </Center>
             </Box>
-            <Button size="md" flex="1" onClick={(e: any) => setMode(mode + 1)}>
+            <Button size="md" flex="1" onClick={() => updateModeIndex(modeIndex + 1)}>
               <ArrowForwardIcon boxSize={5} color="#ef3499" />
             </Button>
           </Flex>
@@ -61,5 +91,3 @@ export default function SongSelect() {
     </>
   );
 }
-
-//export the component to render it
