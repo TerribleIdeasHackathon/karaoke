@@ -40,6 +40,7 @@ export async function handleQuery(prompt: string): Promise<string[]> {
 
   const lines = results
     .join('')
+    // TODO: Verify if this is still necessary with the new model
     // Sometimes we just get a ton of tabs? I think they're meant to be a newline...?
     .replaceAll(/\t+/g, '\n')
     .split('\n')
