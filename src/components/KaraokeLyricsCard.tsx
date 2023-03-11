@@ -7,8 +7,27 @@ interface KaraokeLyricsCard {
 
 export default function KaraokeLyricsCard({ children }: KaraokeLyricsCard) {
   return (
-    <Box bgColor="gray.200" px={10} py={5} rounded={10}>
-      <Center>{children}</Center>
+    <Box
+      bgColor="gray.200"
+      display={'flex'}
+      px={10}
+      py={10}
+      minH={'64'}
+      rounded={10}
+      justifyContent={'center'}
+      alignItems="center"
+    >
+      <Center
+        flexDir={'column'}
+        fontSize={'xl'}
+        fontWeight={'semibold'}
+        textAlign={'center'}
+        justifyContent={'center'}
+        alignItems="center"
+        height="full"
+      >
+        {children}
+      </Center>
     </Box>
   );
 }
