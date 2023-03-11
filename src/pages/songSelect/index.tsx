@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import { Gamemode } from '@/models/gamemode';
+import { useRouter } from 'next/router';
 
 interface ModeData {
   mode: Gamemode;
@@ -11,6 +12,8 @@ interface ModeData {
 }
 
 export default function SongSelect() {
+  const router = useRouter();
+
   const modes: ModeData[] = [
     { mode: Gamemode.Antonym, displayMode: 'Opposite' },
     { mode: Gamemode.Themes, displayMode: 'Themes' },
@@ -24,6 +27,11 @@ export default function SongSelect() {
 
   const handleSongQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSongQuery(e.target.value);
+  };
+
+  const handleClickSing = () => {
+    // This can only be called when songQuery is not an empty string
+    router.push({ pathname: '/karaoke', query: { songQuery, mode: modes[modeIndex].mode } });
   };
 
   return (
@@ -81,11 +89,9 @@ export default function SongSelect() {
               <ArrowForwardIcon boxSize={5} color="#ef3499" />
             </Button>
           </Flex>
-          <Link href="/sing">
-            <Button width={'full'} colorScheme={'pink'}>
-              Sing!
-            </Button>
-          </Link>
+          <Button width="full" colorScheme="pink" isDisabled={songQuery.length === 0} onClick={handleClickSing}>
+            Sing!
+          </Button>
         </Box>
       </Box>
     </>
