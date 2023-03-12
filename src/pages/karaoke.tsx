@@ -5,7 +5,7 @@ import LoadingScreen from '@/components/LoadingScreen';
 import KaraokeScreen from '@/components/KaraokeScreen';
 import { useMemo, useState } from 'react';
 import ReactPlayer from 'react-player/youtube';
-import { Box, Button } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import StartMusicScreen from '@/components/StartMusicScreen';
 
 async function fetchLyrics(songQuery: string, mode: Gamemode, theme?: string) {
@@ -387,15 +387,13 @@ export default function KaraokePage() {
     () =>
       musicData?.youtubeId === undefined ? null : (
         <ReactPlayer
-          onReady={() => console.log('ready')}
           onStart={() => {
             setMusicStarted(true);
-            console.log('started');
           }}
           url={`https://www.youtube.com/watch?v=${musicData.youtubeId}`}
           playing={playMusic}
-          width={'100px'}
-          height={'100px'}
+          width={'0px'}
+          height={'0px'}
         />
       ),
     [musicData, playMusic],
