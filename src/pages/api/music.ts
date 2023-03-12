@@ -10,10 +10,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { songQuery } = body;
 
   const url = await searchForSongVideo(songQuery);
+  console.log(url);
   if (url) {
-    const idStartIndex = url.indexOf('v=') + 2;
-    const idEndIndex = url.indexOf('&', idStartIndex);
-    const youtubeId = url.substring(idStartIndex, idEndIndex === -1 ? url.length - 1 : idEndIndex);
+    const queryUrl = new URL(url);
+    const youtubeId = queryUrl.searchParams.get('v');
 
     return res.status(200).json({ youtubeId });
   }
