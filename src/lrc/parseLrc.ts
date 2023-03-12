@@ -1,7 +1,6 @@
 import { LyricData, ParsedLyricData, SongMetadata } from '../models/karaokeResponse';
 
 const TimestampRegex = /^((\[\d{2}:\d{2}\.\d{2}\])+).*$/g;
-const LyricIgnorePrefixes = ['artist', 'title:', 'written by:'];
 
 interface ParsedSongData extends SongMetadata {
   lyrics: ParsedLyricData[];
@@ -13,7 +12,7 @@ export function generateLyricDurations(parsedLyricData: ParsedLyricData[]): Lyri
   for (let index = 0; index < parsedLyricData.length; index++) {
     const lyricData = parsedLyricData[index];
     const numberOfWords = lyricData.lyric.split(' ').length;
-    const guestimatedMaxDurationMs = numberOfWords * 350;
+    const guestimatedMaxDurationMs = numberOfWords * 500;
 
     const isLastLine = index === parsedLyricData.length - 1;
 
@@ -39,9 +38,14 @@ export function parseSongData(originalLrcFile: string): ParsedSongData {
 }
 
 export function parseLines(lines: string[]): ParsedSongData {
-  const lyrics: ParsedLyricData[] = [];
+  let lyrics: ParsedLyricData[] = [];
   let artist: string | null = null;
   let songName: string | null = null;
+
+  if (lines.length !== 0 && lines[0].toLowerCase().includes('antonym')) {
+    // Sometime it responds with something along the lines of 'The antonym version is:'
+    lines.splice(0, 1);
+  }
 
   for (const line of lines) {
     // Check for song metadata
@@ -77,18 +81,16 @@ export function parseLines(lines: string[]): ParsedSongData {
     }
   }
 
+  // Make sure the first element is timestamped at 0ms
+  if (lyrics.length === 0 || lyrics[0].timestampMs !== 0) {
+    lyrics = [{ timestampMs: 0, lyric: '' }, ...lyrics];
+  }
+
   return { lyrics, artist, songName };
 }
 
 function ignoreLyric(lyric: string): boolean {
-  if (lyric.length === 0) return true;
-  const loweredLyric = lyric.toLowerCase();
-
-  for (const prefix of LyricIgnorePrefixes) {
-    if (loweredLyric.startsWith(prefix)) return true;
-  }
-
-  return false;
+  return lyric.length === 0;
 }
 
 /**

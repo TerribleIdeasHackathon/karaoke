@@ -17,6 +17,7 @@ import Header from '@/components/Header';
 import Card from '@/components/Card';
 import { Gamemode } from '@/models/gamemode';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 interface ModeData {
   mode: Gamemode;
@@ -48,6 +49,9 @@ export default function SongSelect() {
 
   return (
     <>
+      <Head>
+        <title>KarAIoki</title>
+      </Head>
       <Header>
         <Link href="/">
           <IconButton aria-label="Go back to home" title="Go back to home" icon={<ArrowBackIcon />} />
