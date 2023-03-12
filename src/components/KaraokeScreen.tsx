@@ -16,6 +16,8 @@ interface KaraokeScreenProps {
 export default function KaraokeScreen({ karaokeResponse, youtubeId }: KaraokeScreenProps) {
   const { index, controlsA, controlsB, controlsC } = useSongControls(karaokeResponse.lyrics);
 
+  console.log(youtubeId);
+
   const maxIdx = karaokeResponse.lyrics.length - 1;
   const nextIdx = index + 1;
 
