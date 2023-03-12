@@ -37,7 +37,7 @@ export default function KaraokeScreen({ karaokeResponse, youtubeId, mode, theme 
         <Flex width="full" justifyContent="space-between" pb="5" px="2" direction="row" gap={2}>
           <div>
             <Text as="span" fontWeight="bold">
-              {karaokeResponse.songName}
+              {karaokeResponse.songName + ' '}
             </Text>
             <Text as="span">{karaokeResponse.artist}</Text>
           </div>
