@@ -11,6 +11,8 @@ interface KaraokeScreenProps {
 }
 
 export default function KaraokeScreen({ karaokeResponse, musicUrl }: KaraokeScreenProps) {
+  console.log(karaokeResponse.lyrics);
+  console.log(karaokeResponse.lyrics.length);
   const { index, controlsA, controlsB, controlsC } = useSongControls(karaokeResponse.lyrics);
 
   const maxIdx = karaokeResponse.lyrics.length - 1;
