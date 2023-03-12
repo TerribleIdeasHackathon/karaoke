@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Gamemode } from '@/models/gamemode';
 import LoadingScreen from '@/components/LoadingScreen';
 import KaraokeScreen from '@/components/KaraokeScreen';
+import { useState } from 'react';
 
 async function fetchLyrics(songQuery: string, mode: Gamemode) {
   const response = await fetch('/api/lyrics', {
@@ -19,8 +20,13 @@ async function fetchLyrics(songQuery: string, mode: Gamemode) {
   return data;
 }
 
+<<<<<<< HEAD
 async function fetchYoutubeId(songQuery: string, mode: Gamemode) {
   const response = await fetch('/api/lyrics', {
+=======
+async function fetchMusicUrl(songQuery: string, mode: Gamemode) {
+  const response = await fetch('/api/music', {
+>>>>>>> fix/fetch
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -37,6 +43,7 @@ async function fetchYoutubeId(songQuery: string, mode: Gamemode) {
 
 export default function KaraokePage() {
   const router = useRouter();
+  const [hasLyrics, setHasLyrics] = useState(false);
 
   const { songQuery, mode } = router.query as {
     songQuery: string;
@@ -47,9 +54,10 @@ export default function KaraokePage() {
     data: karaokeResponse,
     isLoading: isLyricsLoading,
     error: lyricsError,
-  } = useQuery({
-    queryKey: ['karaoke', songQuery],
+  } = useQuery(['lyrics', songQuery], {
     queryFn: () => fetchLyrics(songQuery, mode),
+    onSuccess: () => setHasLyrics(true),
+    enabled: !hasLyrics,
   });
 
   const {
@@ -57,7 +65,7 @@ export default function KaraokePage() {
     isLoading: isMusicLoading,
     error: musicError,
   } = useQuery({
-    queryKey: ['karaoke', songQuery],
+    queryKey: ['music', songQuery],
     queryFn: () => fetchYoutubeId(songQuery, mode),
   });
 

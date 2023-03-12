@@ -13,7 +13,7 @@ interface KaraokeScreenProps {
   youtubeId: string;
 }
 
-export default function KaraokeScreen({ karaokeResponse, youtubeId }: KaraokeScreenProps) {
+export default function KaraokeScreen({ karaokeResponse, musicUrl }: KaraokeScreenProps) {
   const { index, controlsA, controlsB, controlsC } = useSongControls(karaokeResponse.lyrics);
 
   const maxIdx = karaokeResponse.lyrics.length - 1;
