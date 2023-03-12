@@ -1,6 +1,8 @@
-import { Box, Spinner, Center, Text, Flex } from '@chakra-ui/react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
+import { Box, Spinner, Center, Text, Flex, Link, IconButton } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import Card from './Card';
+import Header from './Header';
 
 const quotes = [
   'You stink!',
@@ -23,16 +25,27 @@ export default function LoadingScreen() {
   }, []);
 
   return (
-    <Card minHeight="220px">
-      <Flex gap={5} alignItems="center">
-        <Spinner className="spinner" size="xl" color="white" thickness="5px" speed="2s" />
-        <Text fontWeight="bold" fontSize="4xl">
-          Loading...
-        </Text>
-      </Flex>
-      <Text textAlign="center" p={3} flexGrow="1">
-        {quote}
-      </Text>
-    </Card>
+    <>
+      <Header>
+        <Link href="/">
+          <IconButton aria-label="Go back to home" title="Go back to home" icon={<ArrowBackIcon />} />
+        </Link>
+      </Header>
+      <Box>
+        <Center>
+          <Card minHeight="250px" width={'600px'}>
+            <Flex pt={8} gap={5} alignItems="center">
+              <Spinner className="spinner" size="xl" color="white" thickness="5px" speed="2s" />
+              <Text fontWeight="bold" fontSize="4xl">
+                Loading...
+              </Text>
+            </Flex>
+            <Text textAlign="center" p={3} flexGrow="1">
+              {quote}
+            </Text>
+          </Card>
+        </Center>
+      </Box>
+    </>
   );
 }
