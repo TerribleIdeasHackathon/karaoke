@@ -66,6 +66,7 @@ export default function SongSelect() {
       <Head>
         <title>KarAIoki</title>
       </Head>
+
       <Header>
         <Link href="/">
           <IconButton aria-label="Go back to home" title="Go back to home" icon={<ArrowBackIcon />} />
