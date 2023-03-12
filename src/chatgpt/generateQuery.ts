@@ -15,8 +15,8 @@ export function generateQuery(request: KaraokeRequest, lyrics: string): string {
 
 export function generateAntonymQuery(lyrics: string): string {
   return (
-    'Given a song, you will generate antonyms for every line. Make sure the result has the same number of lines as the original song.\n\n' +
-    'The song:\n' +
+    'Given a song in the LRC format, you will generate antonyms for every line. Make sure the result uses the exact same timestamps as the original LRC file.\n\n' +
+    'The LRC file:\n' +
     lyrics
   );
 }

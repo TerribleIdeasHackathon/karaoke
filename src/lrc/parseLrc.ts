@@ -6,6 +6,38 @@ interface ParsedSongData extends SongMetadata {
   lyrics: ParsedLyricData[];
 }
 
+export function parseLrcLines(lines: string[]): LyricData[] {
+  const parsedLyricData = lines.map((line) => {
+    const startOfLyrics = line.indexOf(']') + 1;
+    const timestamp = line.substring(0, startOfLyrics);
+    const lyric = line.substring(startOfLyrics);
+
+    return { timestampMs: timestampToMs(timestamp), lyric };
+  });
+
+  const resultingLyricData: LyricData[] = [];
+
+  for (let index = 0; index < parsedLyricData.length; index++) {
+    const lyricData = parsedLyricData[index];
+    const numberOfWords = lyricData.lyric.split(' ').length;
+    const guestimatedMaxDurationMs = numberOfWords * 500;
+
+    const isLastLine = index === parsedLyricData.length - 1;
+
+    let duration: number;
+    if (!isLastLine) {
+      const timestampDifferenceMs = Math.max(0, parsedLyricData[index + 1].timestampMs - lyricData.timestampMs);
+      duration = Math.min(timestampDifferenceMs, guestimatedMaxDurationMs);
+    } else {
+      duration = guestimatedMaxDurationMs;
+    }
+
+    resultingLyricData.push({ ...lyricData, duration });
+  }
+
+  return resultingLyricData;
+}
+
 export function generateLyricDurations(parsedLyricData: ParsedLyricData[]): LyricData[] {
   const resultingLyricData: LyricData[] = [];
 

@@ -1,6 +1,6 @@
 import { generateQuery } from '@/chatgpt/generateQuery';
 import { handleQuery as handleChatGptQuery } from '@/chatgpt/handleQuery';
-import { parseSongData, generateLyricDurations } from '@/lrc/parseLrc';
+import { parseSongData, generateLyricDurations, msToTimestamp, parseLrcLines } from '@/lrc/parseLrc';
 import { searchForSongLyrics } from '@/lrc/scrapeLyrics';
 import { ErrorResponse } from '@/models/errorResponse';
 import { KaraokeResponse, ParsedLyricData } from '@/models/karaokeResponse';
@@ -19,24 +19,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   const songData = parseSongData(lrcLyrics);
-  const lyricsWithoutTimestamps = songData.lyrics.map((lyricData) => lyricData.lyric).join('\n');
+  const lyricsWithTimestamps = songData.lyrics
+    .map((lyricData) => `${msToTimestamp(lyricData.timestampMs)}${lyricData.lyric}`)
+    .join('\n');
 
-  const chatGptQuery = generateQuery(body, lyricsWithoutTimestamps);
-
-  const lrcLines: ParsedLyricData[] = [];
+  const chatGptQuery = generateQuery(body, lyricsWithTimestamps);
 
   // This will take a while...
   const mutatedLyrics = await handleChatGptQuery(chatGptQuery);
 
-  // Map the original timestamps to the new lyrics
-  for (let index = 0; index < Math.min(songData.lyrics.length, mutatedLyrics.length); index++) {
-    const mutatedLyric = mutatedLyrics[index];
-    const timestampMs = songData.lyrics[index].timestampMs;
+  // // Map the original timestamps to the new lyrics
+  // for (let index = 0; index < Math.min(songData.lyrics.length, mutatedLyrics.length); index++) {
+  //   const mutatedLyric = mutatedLyrics[index];
+  //   const timestampMs = songData.lyrics[index].timestampMs;
 
-    lrcLines.push({ timestampMs, lyric: mutatedLyric });
-  }
+  //   lrcLines.push({ timestampMs, lyric: mutatedLyric });
+  // }
 
-  const lyricData = generateLyricDurations(lrcLines);
+  const lyricData = parseLrcLines(mutatedLyrics);
 
   res.status(200).json({ lyrics: lyricData, songName: songData.songName, artist: songData.artist });
 }
