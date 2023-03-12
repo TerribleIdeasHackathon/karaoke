@@ -74,10 +74,10 @@ export default function KaraokeScreen({ karaokeResponse, mode, theme }: KaraokeS
             Forward
           </Button>
         </Flex>
-        <Box>
+        <Box p={8} backgroundColor="#131416c2" mt={4} rounded="lg">
           {karaokeResponse.lyrics.map((line, idx) => {
             return (
-              <Text key={idx} color="gray400">
+              <Text key={idx} color="gray400" fontSize="lg">
                 {line.lyric}
               </Text>
             );
