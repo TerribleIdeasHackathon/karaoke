@@ -17,7 +17,7 @@ export default function SongSelect() {
           <IconButton aria-label="Go back to home" title="Go back to home" icon={<ArrowBackIcon />} />
         </Link>
       </Header>
-      <Box display={'grid'} justifyContent={'center'} alignItems="center" minHeight="100vh">
+      <Box display={'grid'} justifyContent={'center'} alignItems="center" minHeight="80vh">
         <Box
           bg="#131416c2"
           backgroundSize="cover"
@@ -52,7 +52,7 @@ export default function SongSelect() {
             </Button>
           </Flex>
           <Link href="/sing">
-            <Button width={'full'} colorScheme={'pink'}>
+            <Button width={'full'} colorScheme={'pink'} bgColor="#ef3499">
               Sing!
             </Button>
           </Link>
