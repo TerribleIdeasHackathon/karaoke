@@ -3,9 +3,11 @@ import SongLine from '@/components/SongLine';
 import { motion, useAnimation } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-import KaraokeLyricsCard from '../../components/KaraokeLyricsCard';
-import { KaraokeResponse } from '../../models/karaokeResponse';
+import KaraokeLyricsCard from '@/components/KaraokeLyricsCard';
+import { KaraokeResponse } from '@/models/karaokeResponse';
 import { Container, Flex, Text } from '@chakra-ui/react';
+
+const textHeight = 1.875;
 
 export default function Karaoke() {
   const [karaokeResponse, setKaraokeResponse] = useState<KaraokeResponse>({
@@ -37,16 +39,14 @@ export default function Karaoke() {
       return;
     }
 
-    const interval = setInterval(() => {
+    setTimeout(() => {
       setIndex((index) => index + 1);
     }, karaokeResponse.lyrics[index + 1].timestampMs - karaokeResponse.lyrics[index].timestampMs);
-
-    return () => clearInterval(interval);
   }, [index, karaokeResponse.lyrics, maxIdx]);
 
   useEffect(() => {
     controlsA.start({
-      y: ['0rem', '-1.9rem', '-1.9rem'],
+      y: [`0rem`, `-${textHeight}rem`, `-${textHeight}rem`],
       opacity: [1, 0, 0],
       transition: {
         times: [0, 0.7, 1],
@@ -59,7 +59,7 @@ export default function Karaoke() {
   useEffect(() => {
     if (index >= karaokeResponse.lyrics.length - 1) {
       controlsB.start({
-        y: ['0rem', '-0.95rem', '-0.95rem'],
+        y: ['0rem', `-${1.875 / 2}rem`, `-${1.875 / 2}rem`],
         transition: {
           times: [0, 0.7, 1],
           duration: 0.35,
@@ -68,7 +68,7 @@ export default function Karaoke() {
       });
     } else {
       controlsB.start({
-        y: ['0rem', '-1.9rem', '-1.9rem'],
+        y: ['0rem', `-${textHeight}rem`, `-${textHeight}rem`],
         // color: ['#718096', '#ED64A6', '#ED64A6'],
         transition: {
           times: [0, 0.7, 1],
@@ -86,7 +86,7 @@ export default function Karaoke() {
       });
     } else {
       controlsC.start({
-        y: ['0rem', '-1.9rem', '-1.9rem'],
+        y: ['0rem', `-${textHeight}rem`, `-${textHeight}rem`],
         opacity: [0, 1, 1],
         transition: {
           times: [0, 0.7, 1],

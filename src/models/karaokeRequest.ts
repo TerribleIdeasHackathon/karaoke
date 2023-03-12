@@ -3,13 +3,17 @@ import { Gamemode } from './gamemode';
 
 const AntonymRequest = z.object({
   mode: z.literal(Gamemode.Antonym),
-  songName: z.string(),
+  songQuery: z.string(),
 });
 
 const ThemesRequest = z.object({
   mode: z.literal(Gamemode.Themes),
-  songName: z.string(),
+  songQuery: z.string(),
   theme: z.string(),
 });
 
 export const KaraokeRequest = ThemesRequest.or(AntonymRequest);
+
+export type AntonymRequest = z.infer<typeof AntonymRequest>;
+export type ThemesRequest = z.infer<typeof ThemesRequest>;
+export type KaraokeRequest = z.infer<typeof KaraokeRequest>;
