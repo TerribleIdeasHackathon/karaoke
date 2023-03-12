@@ -1,5 +1,9 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image';
+import { Inter } from 'next/font/google';
+import styles from '@/styles/Home.module.css';
+import Link from 'next/link';
 import { Container, Button, Center } from '@chakra-ui/react';
 import { Text } from '@chakra-ui/react';
 import Card from '@/components/Card';
@@ -15,9 +19,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container pt={10} gap={10} display="flex" flexDirection="column" maxW="2xl">
-        <Center width="full">
-          <Text fontSize="6rem">KarAIokI</Text>
+      <Container pt={36} gap={10} display="flex" flexDirection="column" maxW="2xl">
+        <Center>
+          <Image src={'/logoWhite.svg'} width={600} height={200} alt="Xx_KarAIokI_xX"></Image>
         </Center>
 
         <Card>
@@ -27,7 +31,14 @@ export default function Home() {
             shine with our AI technology.`}
           </Text>
           <Link href="/songSelect" style={{ width: '100%' }}>
-            <Button colorScheme={'pink'} size="lg" fontSize="xl" width="full" rightIcon={<ArrowForwardIcon />}>
+            <Button
+              colorScheme={'pink'}
+              size="lg"
+              fontSize="xl"
+              width="full"
+              bgColor="#ef3499"
+              rightIcon={<ArrowForwardIcon />}
+            >
               Play!
             </Button>
           </Link>
