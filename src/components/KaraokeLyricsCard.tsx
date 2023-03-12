@@ -8,7 +8,7 @@ interface KaraokeLyricsCard {
 export default function KaraokeLyricsCard({ children }: KaraokeLyricsCard) {
   return (
     <Box
-      bgColor="gray.200"
+      bgColor="#131416c2"
       display={'flex'}
       px={10}
       py={10}

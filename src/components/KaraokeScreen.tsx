@@ -2,10 +2,8 @@ import SongLine from '@/components/SongLine';
 import { motion } from 'framer-motion';
 import KaraokeLyricsCard from '@/components/KaraokeLyricsCard';
 import { KaraokeResponse } from '@/models/karaokeResponse';
-import { Button, Container, Flex, IconButton, Link, Text } from '@chakra-ui/react';
+import { Button, Container, Flex, IconButton, Link, Text, Box } from '@chakra-ui/react';
 import useSongControls from '@/hooks/useSongControls';
-import { useEffect, useMemo, useState } from 'react';
-import ReactPlayer from 'react-player';
 import Head from 'next/head';
 import Header from './Header';
 import { ArrowBackIcon } from '@chakra-ui/icons';
@@ -76,6 +74,15 @@ export default function KaraokeScreen({ karaokeResponse, mode, theme }: KaraokeS
             Forward
           </Button>
         </Flex>
+        <Box>
+          {karaokeResponse.lyrics.map((line, idx) => {
+            return (
+              <Text key={idx} color="gray400">
+                {line.lyric}
+              </Text>
+            );
+          })}
+        </Box>
       </Container>
     </>
   );
