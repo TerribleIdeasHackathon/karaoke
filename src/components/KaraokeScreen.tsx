@@ -10,10 +10,10 @@ import { ArrowBackIcon } from '@chakra-ui/icons';
 
 interface KaraokeScreenProps {
   karaokeResponse: KaraokeResponse;
-  musicUrl: string;
+  youtubeId: string;
 }
 
-export default function KaraokeScreen({ karaokeResponse, musicUrl }: KaraokeScreenProps) {
+export default function KaraokeScreen({ karaokeResponse, youtubeId }: KaraokeScreenProps) {
   const { index, controlsA, controlsB, controlsC } = useSongControls(karaokeResponse.lyrics);
 
   const maxIdx = karaokeResponse.lyrics.length - 1;
