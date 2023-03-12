@@ -19,7 +19,7 @@ async function fetchLyrics(songQuery: string, mode: Gamemode) {
   return data;
 }
 
-async function fetchMusicUrl(songQuery: string, mode: Gamemode) {
+async function fetchYoutubeId(songQuery: string, mode: Gamemode) {
   const response = await fetch('/api/lyrics', {
     method: 'POST',
     headers: {
@@ -53,12 +53,12 @@ export default function KaraokePage() {
   });
 
   const {
-    data: musicUrl,
+    data: { youtubeId },
     isLoading: isMusicLoading,
     error: musicError,
   } = useQuery({
     queryKey: ['karaoke', songQuery],
-    queryFn: () => fetchMusicUrl(songQuery, mode),
+    queryFn: () => fetchYoutubeId(songQuery, mode),
   });
 
   if (isLyricsLoading || isMusicLoading) {
@@ -71,5 +71,5 @@ export default function KaraokePage() {
     return <div>Error: {JSON.stringify(error, null, 2)}</div>;
   }
 
-  return <KaraokeScreen karaokeResponse={karaokeResponse} musicUrl={musicUrl} />;
+  return <KaraokeScreen karaokeResponse={karaokeResponse} youtubeId={youtubeId} />;
 }
