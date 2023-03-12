@@ -4,7 +4,7 @@ import KaraokeLyricsCard from '@/components/KaraokeLyricsCard';
 import { KaraokeResponse } from '@/models/karaokeResponse';
 import { Container, Flex, IconButton, Link, Text } from '@chakra-ui/react';
 import useSongControls from '@/hooks/useSongControls';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ReactPlayer from 'react-player';
 import Head from 'next/head';
 import Header from './Header';
@@ -18,12 +18,10 @@ interface KaraokeScreenProps {
 export default function KaraokeScreen({ karaokeResponse, youtubeId }: KaraokeScreenProps) {
   const { index, controlsA, controlsB, controlsC } = useSongControls(karaokeResponse.lyrics);
 
-  console.log(youtubeId);
+  const reactPlayerUrl = useMemo(() => `https://youtube.com/embed/${youtubeId}`, [youtubeId]);
 
   const maxIdx = karaokeResponse.lyrics.length - 1;
   const nextIdx = index + 1;
-
-  console.log(youtubeId);
 
   return (
     <>
@@ -54,10 +52,12 @@ export default function KaraokeScreen({ karaokeResponse, youtubeId }: KaraokeScr
           </Text>
         </KaraokeLyricsCard>
         <ReactPlayer
-          url={`https://youtube.com/embed/${youtubeId}?autoplay=1`}
+          onStart={console.log}
+          url={reactPlayerUrl}
           playing={true}
-          width={'480px'}
-          height={'270px'}
+          width={'0px'}
+          height={'0px'}
+          config={{ youtube: { playerVars: { origin: 'https://www.youtube.com' } } }}
         />
       </Container>
     </>
