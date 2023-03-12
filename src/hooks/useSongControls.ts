@@ -12,6 +12,15 @@ export default function useSongControls(lyrics: KaraokeResponse['lyrics']) {
   const [index, setIndex] = useState(0);
   const maxIdx = lyrics.length - 1;
 
+  function shiftIndex(index: -1 | 1) {
+    setIndex((curIndex) => {
+      const newIndex = curIndex + index;
+      if (newIndex < 0) return 0;
+      if (newIndex > maxIdx) return maxIdx;
+      return curIndex + index;
+    });
+  }
+
   useEffect(() => {
     let timeout: NodeJS.Timer;
 
@@ -64,6 +73,7 @@ export default function useSongControls(lyrics: KaraokeResponse['lyrics']) {
   }, [index, lyrics, maxIdx, controlsA, controlsB, controlsC]);
 
   return {
+    shiftIndex,
     index,
     controlsA,
     controlsB,

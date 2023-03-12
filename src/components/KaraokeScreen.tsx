@@ -2,7 +2,7 @@ import SongLine from '@/components/SongLine';
 import { motion } from 'framer-motion';
 import KaraokeLyricsCard from '@/components/KaraokeLyricsCard';
 import { KaraokeResponse } from '@/models/karaokeResponse';
-import { Container, Flex, IconButton, Link, Text } from '@chakra-ui/react';
+import { Button, Container, Flex, IconButton, Link, Text } from '@chakra-ui/react';
 import useSongControls from '@/hooks/useSongControls';
 import { useEffect, useMemo, useState } from 'react';
 import ReactPlayer from 'react-player';
@@ -17,7 +17,7 @@ interface KaraokeScreenProps {
 }
 
 export default function KaraokeScreen({ karaokeResponse, mode, theme }: KaraokeScreenProps) {
-  const { index, controlsA, controlsB, controlsC } = useSongControls(karaokeResponse.lyrics);
+  const { index, controlsA, controlsB, controlsC, shiftIndex } = useSongControls(karaokeResponse.lyrics);
 
   const maxIdx = karaokeResponse.lyrics.length - 1;
   const nextIdx = index + 1;
@@ -60,6 +60,22 @@ export default function KaraokeScreen({ karaokeResponse, mode, theme }: KaraokeS
             {index + 2 <= maxIdx ? karaokeResponse.lyrics[index + 2].lyric : '🎶🎙🎶'}
           </Text>
         </KaraokeLyricsCard>
+        <Flex direction="row" mt={10}>
+          <Button
+            onClick={() => {
+              shiftIndex(-1);
+            }}
+          >
+            Back
+          </Button>
+          <Button
+            onClick={() => {
+              shiftIndex(1);
+            }}
+          >
+            Forward
+          </Button>
+        </Flex>
       </Container>
     </>
   );
