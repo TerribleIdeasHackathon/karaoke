@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import Layout from '@/components/Layout';
 
-import { Container, Button, Center } from '@chakra-ui/react';
+import { Button, Center, Flex } from '@chakra-ui/react';
 import { Text } from '@chakra-ui/react';
 import Card from '@/components/Card';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
@@ -18,7 +18,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container pt={10} gap={10} display="flex" flexDirection="column" maxW="2xl">
+      <Flex pt={10} gap={10} flexDirection="column" maxW="2xl">
         <Center width="full">
           <Text fontSize="6rem">KarAIokI</Text>
         </Center>
@@ -35,7 +35,7 @@ export default function Home() {
             </Button>
           </Link>
         </Card>
-      </Container>
+      </Flex>
     </Layout>
   );
 }

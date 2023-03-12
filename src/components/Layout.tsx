@@ -20,7 +20,9 @@ export default function Layout({ children, backLink, ariaLabel }: LayoutProps) {
           </Link>
         ) : null}
       </Header>
-      <Container maxW={'2xl'}>{children}</Container>
+      <Container maxWidth="2xl" display="flex" flexDirection="column" gap={5}>
+        {children}
+      </Container>
     </Box>
   );
 }
