@@ -9,6 +9,7 @@ import ReactPlayer from 'react-player';
 import Head from 'next/head';
 import Header from './Header';
 import { ArrowBackIcon } from '@chakra-ui/icons';
+import SongMetadata from './SongMetadata';
 
 interface KaraokeScreenProps {
   karaokeResponse: KaraokeResponse;
@@ -34,12 +35,7 @@ export default function KaraokeScreen({ karaokeResponse, mode, theme }: KaraokeS
       </Header>
       <Container maxW={'3xl'}>
         <Flex width="full" justifyContent="space-between" pb="5" px="2" direction="row" gap={2}>
-          <div>
-            <Text as="span" fontWeight="bold">
-              {karaokeResponse.songName + ' '}
-            </Text>
-            <Text as="span">{karaokeResponse.artist}</Text>
-          </div>
+          <SongMetadata songName={karaokeResponse.songName} artist={karaokeResponse.artist} />
           <div>
             <Text as="span" fontWeight="bold">
               {mode === 'themes' ? 'Theme: ' : 'Opposite'}

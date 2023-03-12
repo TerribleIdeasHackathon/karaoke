@@ -6,6 +6,7 @@ import KaraokeScreen from '@/components/KaraokeScreen';
 import { useMemo, useState } from 'react';
 import ReactPlayer from 'react-player/youtube';
 import { Box, Button } from '@chakra-ui/react';
+import StartMusicScreen from '@/components/StartMusicScreen';
 
 async function fetchLyrics(songQuery: string, mode: Gamemode, theme?: string) {
   // return await Promise.resolve({
@@ -367,6 +368,7 @@ export default function KaraokePage() {
     error: lyricsError,
   } = useQuery(['lyrics', songQuery], {
     queryFn: () => fetchLyrics(songQuery, mode, theme),
+    enabled: songQuery !== undefined && mode !== undefined,
   });
 
   const {
@@ -376,6 +378,7 @@ export default function KaraokePage() {
   } = useQuery({
     queryKey: ['music', songQuery],
     queryFn: () => fetchYoutubeId(songQuery, mode),
+    enabled: songQuery !== undefined && mode !== undefined,
   });
 
   console.log(karaokeResponse);
@@ -410,14 +413,17 @@ export default function KaraokePage() {
 
   console.log('render');
 
-  const showPlayButton = !playMusic && !isMusicLoading && !isLyricsLoading;
-
   return (
     <Box>
-      {showPlayButton && <Button onClick={() => setPlayMusic(true)}>Play!</Button>}
       {reactPlayer}
-      {isLyricsLoading || !musicStarted ? (
+      {isLyricsLoading || isMusicLoading ? (
         <LoadingScreen />
+      ) : !musicStarted ? (
+        <StartMusicScreen
+          startMusic={() => setPlayMusic(true)}
+          songName={karaokeResponse.songName}
+          artist={karaokeResponse.artist}
+        />
       ) : (
         <KaraokeScreen karaokeResponse={karaokeResponse} mode={mode} theme={theme} />
       )}
