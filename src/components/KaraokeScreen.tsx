@@ -13,9 +13,11 @@ import { ArrowBackIcon } from '@chakra-ui/icons';
 interface KaraokeScreenProps {
   karaokeResponse: KaraokeResponse;
   youtubeId: string;
+  mode: string;
+  theme?: string;
 }
 
-export default function KaraokeScreen({ karaokeResponse, youtubeId }: KaraokeScreenProps) {
+export default function KaraokeScreen({ karaokeResponse, youtubeId, mode, theme }: KaraokeScreenProps) {
   const { index, controlsA, controlsB, controlsC } = useSongControls(karaokeResponse.lyrics);
 
   const reactPlayerUrl = useMemo(() => `https://youtube.com/embed/${youtubeId}`, [youtubeId]);
@@ -34,9 +36,19 @@ export default function KaraokeScreen({ karaokeResponse, youtubeId }: KaraokeScr
         </Link>
       </Header>
       <Container maxW={'3xl'}>
-        <Flex pb="5" pl="2" direction="row" gap={2}>
-          <Text fontWeight="bold">{karaokeResponse.songName}</Text>
-          <Text>{karaokeResponse.artist}</Text>
+        <Flex width="full" justifyContent="space-between" pb="5" px="2" direction="row" gap={2}>
+          <div>
+            <Text as="span" fontWeight="bold">
+              {karaokeResponse.songName + ' '}
+            </Text>
+            <Text as="span">{karaokeResponse.artist}</Text>
+          </div>
+          <div>
+            <Text as="span" fontWeight="bold">
+              {mode === 'themes' ? 'Theme: ' : 'Opposite'}
+            </Text>
+            {theme && <Text as="span">{theme}</Text>}
+          </div>
         </Flex>
         <KaraokeLyricsCard>
           <motion.div animate={controlsA} style={{ y: 0 }}>

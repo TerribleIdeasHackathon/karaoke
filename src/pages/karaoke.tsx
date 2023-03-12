@@ -5,7 +5,7 @@ import LoadingScreen from '@/components/LoadingScreen';
 import KaraokeScreen from '@/components/KaraokeScreen';
 import { useState } from 'react';
 
-async function fetchLyrics(songQuery: string, mode: Gamemode) {
+async function fetchLyrics(songQuery: string, mode: Gamemode, theme?: string) {
   const response = await fetch('/api/lyrics', {
     method: 'POST',
     headers: {
@@ -14,6 +14,7 @@ async function fetchLyrics(songQuery: string, mode: Gamemode) {
     body: JSON.stringify({
       songQuery,
       mode,
+      theme,
     }),
   });
   const data = await response.json();
@@ -40,9 +41,10 @@ export default function KaraokePage() {
   const router = useRouter();
   const [hasLyrics, setHasLyrics] = useState(false);
 
-  const { songQuery, mode } = router.query as {
+  const { songQuery, mode, theme } = router.query as {
     songQuery: string;
     mode: Gamemode;
+    theme?: string;
   };
 
   const {
@@ -50,7 +52,7 @@ export default function KaraokePage() {
     isLoading: isLyricsLoading,
     error: lyricsError,
   } = useQuery(['lyrics', songQuery], {
-    queryFn: () => fetchLyrics(songQuery, mode),
+    queryFn: () => fetchLyrics(songQuery, mode, theme),
     onSuccess: () => setHasLyrics(true),
     enabled: !hasLyrics,
   });
@@ -74,5 +76,5 @@ export default function KaraokePage() {
     return <div>Error: {JSON.stringify(error, null, 2)}</div>;
   }
 
-  return <KaraokeScreen karaokeResponse={karaokeResponse} youtubeId={musicData.youtubeId} />;
+  return <KaraokeScreen karaokeResponse={karaokeResponse} youtubeId={musicData.youtubeId} mode={mode} theme={theme} />;
 }

@@ -6,8 +6,11 @@ export function generateQuery(request: KaraokeRequest, lyrics: string): string {
     return generateAntonymQuery(lyrics);
   }
 
-  // TODO: Generate theme query
-  return '';
+  return (
+    `Given a song, create a version with the theme: ${request.theme}. Make sure the result has the same number of lines as the original song.\n\n` +
+    'The song:\n' +
+    lyrics
+  );
 }
 
 export function generateAntonymQuery(lyrics: string): string {

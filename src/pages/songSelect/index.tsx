@@ -33,6 +33,9 @@ export default function SongSelect() {
   ];
   const [modeIndex, setModeIndex] = useState(0);
   const [songQuery, setSongQuery] = useState('');
+  const [theme, setTheme] = useState('');
+
+  const canSubmit = songQuery.length !== 0 && (theme.length !== 0 || modes[modeIndex].mode !== Gamemode.Themes);
 
   const updateModeIndex = (newModeIndex: number) => {
     setModeIndex(Math.abs(newModeIndex % modes.length));
@@ -42,9 +45,20 @@ export default function SongSelect() {
     setSongQuery(e.target.value);
   };
 
-  const handleClickSing = () => {
+  const handleThemeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTheme(e.target.value);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (canSubmit) {
+      handleRequestSong();
+    }
+  };
+
+  const handleRequestSong = () => {
     // This can only be called when songQuery is not an empty string
-    router.push({ pathname: '/karaoke', query: { songQuery, mode: modes[modeIndex].mode } });
+    router.push({ pathname: '/karaoke', query: { songQuery, mode: modes[modeIndex].mode, theme } });
   };
 
   return (
@@ -63,45 +77,64 @@ export default function SongSelect() {
             Select Song
           </Text>
         </Center>
-        <Card>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <SearchIcon />
-            </InputLeftElement>
-            <Input
-              placeholder="Search for a song"
-              onChange={handleSongQueryChange}
-              value={songQuery}
-              _focusVisible={{
-                borderColor: '#ef3499',
-                boxShadow: '0 0 0 1px #ef3499',
-              }}
-            />
-          </InputGroup>
-          <Center>
-            <Text>Select Game Mode</Text>
-          </Center>
-          <Flex width="full" gap={5}>
-            <Button size="md" onClick={() => updateModeIndex(modeIndex - 1)}>
-              <ArrowBackIcon boxSize={5} color="#ef3499" />
-            </Button>
-            <Center width="full" borderWidth="1px" borderRadius="md">
-              <Text fontSize="xl">{modes[modeIndex].displayMode}</Text>
+        <form onSubmit={handleSubmit}>
+          <Card>
+            <InputGroup>
+              <InputLeftElement pointerEvents="none">
+                <SearchIcon />
+              </InputLeftElement>
+              <Input
+                placeholder="Search for a song"
+                onChange={handleSongQueryChange}
+                value={songQuery}
+                _focusVisible={{
+                  borderColor: '#ef3499',
+                  boxShadow: '0 0 0 1px #ef3499',
+                }}
+              />
+            </InputGroup>
+
+            <Center>
+              <Text>Select Game Mode</Text>
             </Center>
-            <Button size="md" onClick={() => updateModeIndex(modeIndex + 1)}>
-              <ArrowForwardIcon boxSize={5} color="#ef3499" />
+            <Flex width="full" gap={5}>
+              <Button size="md" onClick={() => updateModeIndex(modeIndex - 1)}>
+                <ArrowBackIcon boxSize={5} color="#ef3499" />
+              </Button>
+              <Center width="full" borderWidth="1px" borderRadius="md">
+                <Text fontSize="xl">{modes[modeIndex].displayMode}</Text>
+              </Center>
+              <Button size="md" onClick={() => updateModeIndex(modeIndex + 1)}>
+                <ArrowForwardIcon boxSize={5} color="#ef3499" />
+              </Button>
+            </Flex>
+            {modes[modeIndex].mode === Gamemode.Themes && (
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <SearchIcon />
+                </InputLeftElement>
+                <Input
+                  placeholder="Enter a theme"
+                  onChange={handleThemeChange}
+                  value={theme}
+                  _focusVisible={{
+                    borderColor: '#ef3499',
+                    boxShadow: '0 0 0 1px #ef3499',
+                  }}
+                />
+              </InputGroup>
+            )}
+            <Button
+              width="full"
+              colorScheme="pink"
+              isDisabled={!canSubmit}
+              bgColor="#ef3499"
+              onClick={handleRequestSong}
+            >
+              Sing!
             </Button>
-          </Flex>
-          <Button
-            width="full"
-            colorScheme="pink"
-            isDisabled={songQuery.length === 0}
-            bgColor="#ef3499"
-            onClick={handleClickSing}
-          >
-            Sing!
-          </Button>
-        </Card>
+          </Card>
+        </form>
       </Container>
     </>
   );
