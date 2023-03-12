@@ -20,13 +20,8 @@ async function fetchLyrics(songQuery: string, mode: Gamemode) {
   return data;
 }
 
-<<<<<<< HEAD
-async function fetchYoutubeId(songQuery: string, mode: Gamemode) {
-  const response = await fetch('/api/lyrics', {
-=======
 async function fetchMusicUrl(songQuery: string, mode: Gamemode) {
   const response = await fetch('/api/music', {
->>>>>>> fix/fetch
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
