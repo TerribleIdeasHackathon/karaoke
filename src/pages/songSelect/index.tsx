@@ -84,19 +84,16 @@ export default function SongSelect() {
               <ArrowForwardIcon boxSize={5} color="#ef3499" />
             </Button>
           </Flex>
-          <Button width="full" colorScheme="pink" isDisabled={songQuery.length === 0} onClick={handleClickSing}>
+          <Button
+            width="full"
+            colorScheme="pink"
+            isDisabled={songQuery.length === 0}
+            bgColor="#ef3499"
+            onClick={handleClickSing}
+          >
             Sing!
           </Button>
         </Card>
-        <Button
-          width="full"
-          colorScheme="pink"
-          isDisabled={songQuery.length === 0}
-          bgColor="#ef3499"
-          onClick={handleClickSing}
-        >
-          Sing!
-        </Button>
       </Layout>
     </>
   );
