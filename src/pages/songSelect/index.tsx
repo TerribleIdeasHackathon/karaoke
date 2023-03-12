@@ -33,6 +33,7 @@ export default function SongSelect() {
   ];
   const [modeIndex, setModeIndex] = useState(0);
   const [songQuery, setSongQuery] = useState('');
+  const [theme, setTheme] = useState('');
 
   const updateModeIndex = (newModeIndex: number) => {
     setModeIndex(Math.abs(newModeIndex % modes.length));
@@ -42,9 +43,13 @@ export default function SongSelect() {
     setSongQuery(e.target.value);
   };
 
+  const handleThemeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTheme(e.target.value);
+  };
+
   const handleClickSing = () => {
     // This can only be called when songQuery is not an empty string
-    router.push({ pathname: '/karaoke', query: { songQuery, mode: modes[modeIndex].mode } });
+    router.push({ pathname: '/karaoke', query: { songQuery, mode: modes[modeIndex].mode, theme } });
   };
 
   return (
@@ -78,6 +83,7 @@ export default function SongSelect() {
               }}
             />
           </InputGroup>
+
           <Center>
             <Text>Select Game Mode</Text>
           </Center>
@@ -92,10 +98,26 @@ export default function SongSelect() {
               <ArrowForwardIcon boxSize={5} color="#ef3499" />
             </Button>
           </Flex>
+          {modes[modeIndex].mode === Gamemode.Themes && (
+            <InputGroup>
+              <InputLeftElement pointerEvents="none">
+                <SearchIcon />
+              </InputLeftElement>
+              <Input
+                placeholder="Enter a theme"
+                onChange={handleThemeChange}
+                value={theme}
+                _focusVisible={{
+                  borderColor: '#ef3499',
+                  boxShadow: '0 0 0 1px #ef3499',
+                }}
+              />
+            </InputGroup>
+          )}
           <Button
             width="full"
             colorScheme="pink"
-            isDisabled={songQuery.length === 0}
+            isDisabled={songQuery.length === 0 || (theme.length === 0 && modes[modeIndex].mode === Gamemode.Themes)}
             bgColor="#ef3499"
             onClick={handleClickSing}
           >
