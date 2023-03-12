@@ -50,46 +50,53 @@ export default function SongSelect() {
   return (
     <>
       <Layout ariaLabel="Go Back To Home" backLink="/">
-        <Container maxWidth="2xl" display="flex" flexDirection="column" gap={5}>
+        <Center>
+          <Text fontSize="4xl" fontWeight="bold">
+            Select Song
+          </Text>
+        </Center>
+        <Card>
+          <InputGroup>
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon />
+            </InputLeftElement>
+            <Input
+              placeholder="Search for a song"
+              onChange={handleSongQueryChange}
+              value={songQuery}
+              _focusVisible={{
+                borderColor: '#ef3499',
+                boxShadow: '0 0 0 1px #ef3499',
+              }}
+            />
+          </InputGroup>
           <Center>
-            <Text fontSize="4xl" fontWeight="bold">
-              Select Song
-            </Text>
+            <Text>Select Game Mode</Text>
           </Center>
-          <Card>
-            <InputGroup>
-              <InputLeftElement pointerEvents="none">
-                <SearchIcon />
-              </InputLeftElement>
-              <Input
-                placeholder="Search for a song"
-                onChange={handleSongQueryChange}
-                value={songQuery}
-                _focusVisible={{
-                  borderColor: '#ef3499',
-                  boxShadow: '0 0 0 1px #ef3499',
-                }}
-              />
-            </InputGroup>
-            <Center>
-              <Text>Select Game Mode</Text>
-            </Center>
-            <Flex width="full" gap={5}>
-              <Button size="md" onClick={() => updateModeIndex(modeIndex - 1)}>
-                <ArrowBackIcon boxSize={5} color="#ef3499" />
-              </Button>
-              <Center width="full" borderWidth="1px" borderRadius="md">
-                <Text fontSize="xl">{modes[modeIndex].displayMode}</Text>
-              </Center>
-              <Button size="md" onClick={() => updateModeIndex(modeIndex + 1)}>
-                <ArrowForwardIcon boxSize={5} color="#ef3499" />
-              </Button>
-            </Flex>
-            <Button width="full" colorScheme="pink" isDisabled={songQuery.length === 0} onClick={handleClickSing}>
-              Sing!
+          <Flex width="full" gap={5}>
+            <Button size="md" onClick={() => updateModeIndex(modeIndex - 1)}>
+              <ArrowBackIcon boxSize={5} color="#ef3499" />
             </Button>
-          </Card>
-        </Container>
+            <Center width="full" borderWidth="1px" borderRadius="md">
+              <Text fontSize="xl">{modes[modeIndex].displayMode}</Text>
+            </Center>
+            <Button size="md" onClick={() => updateModeIndex(modeIndex + 1)}>
+              <ArrowForwardIcon boxSize={5} color="#ef3499" />
+            </Button>
+          </Flex>
+          <Button width="full" colorScheme="pink" isDisabled={songQuery.length === 0} onClick={handleClickSing}>
+            Sing!
+          </Button>
+        </Card>
+        <Button
+          width="full"
+          colorScheme="pink"
+          isDisabled={songQuery.length === 0}
+          bgColor="#ef3499"
+          onClick={handleClickSing}
+        >
+          Sing!
+        </Button>
       </Layout>
     </>
   );

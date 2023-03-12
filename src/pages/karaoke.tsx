@@ -2,8 +2,8 @@ import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
 import { Gamemode } from '@/models/gamemode';
 import LoadingScreen from '@/components/LoadingScreen';
+import KaraokeScreen from '@/components/KaraokeScreen';
 
-// songQuery, mode
 async function fetchLyrics(songQuery: string, mode: Gamemode) {
   const response = await fetch('/api/lyrics', {
     method: 'POST',
@@ -44,7 +44,7 @@ export default function KaraokePage() {
   };
 
   const {
-    data: lyrics,
+    data: karaokeResponse,
     isLoading: isLyricsLoading,
     error: lyricsError,
   } = useQuery({
@@ -62,20 +62,14 @@ export default function KaraokePage() {
   });
 
   if (isLyricsLoading || isMusicLoading) {
-    return <div>Loading...</div>;
+    return <LoadingScreen />;
   }
 
   if (lyricsError || musicError) {
+    // TODO: Make this a cleaner display
     const error = lyricsError || musicError;
     return <div>Error: {JSON.stringify(error, null, 2)}</div>;
   }
 
-  return (
-    <>
-      <h2>Lyrics:</h2>
-      <pre>{JSON.stringify(lyrics, null, 2)}</pre>
-      <h2>Music Href:</h2>
-      <pre>{JSON.stringify(musicUrl, null, 2)}</pre>
-    </>
-  );
+  return <KaraokeScreen karaokeResponse={karaokeResponse} musicUrl={musicUrl} />;
 }
